@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS ENGINE - MODULE-03</title>
+    <title>CHRONOS ULTRA - EDITED HACK EDITION</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-color: #0a0f1d;
-            --panel-bg: #111827;
+            --bg-color: #070a13;
+            --panel-bg: #0f172a;
             --accent-blue: #38bdf8;
             --accent-green: #34d399;
             --accent-purple: #a78bfa;
             --accent-pink: #f472b6;
+            --accent-orange: #f97316;
+            --accent-yellow: #fbbf24;
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
-            --border: #1f2937;
+            --border: #1e293b;
         }
         body {
             background-color: var(--bg-color);
@@ -25,7 +27,7 @@
             padding: 20px;
         }
         .header {
-            border-bottom: 2px solid var(--accent-blue);
+            border-bottom: 2px solid var(--accent-purple);
             padding-bottom: 10px;
             margin-bottom: 20px;
             display: flex;
@@ -36,8 +38,8 @@
             margin: 0;
             font-size: 24px;
             letter-spacing: 2px;
-            color: var(--accent-blue);
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            color: var(--accent-purple);
+            text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
         }
         .container {
             display: grid;
@@ -52,9 +54,9 @@
             height: fit-content;
         }
         .form-group {
-            margin-bottom: 15px;
-            border-bottom: 1px dashed #1f2937;
-            padding-bottom: 10px;
+            margin-bottom: 14px;
+            border-bottom: 1px dashed #1e293b;
+            padding-bottom: 8px;
         }
         label {
             display: block;
@@ -77,22 +79,18 @@
         }
         input {
             margin-top: 5px;
-            border-color: #2d3748;
-        }
-        input::placeholder {
-            color: #4a5568;
-            font-size: 11px;
+            border-color: #334155;
         }
         select:focus, input:focus {
-            border-color: var(--accent-blue);
+            border-color: var(--accent-purple);
             outline: none;
         }
         .btn {
             width: 100%;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-            color: var(--bg-color);
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            color: #000;
             border: none;
-            padding: 12px;
+            padding: 14px;
             border-radius: 4px;
             font-weight: bold;
             cursor: pointer;
@@ -102,7 +100,7 @@
         }
         .btn:hover {
             opacity: 0.9;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 15px rgba(244, 114, 182, 0.4);
         }
         .dashboard {
             display: grid;
@@ -115,15 +113,20 @@
             border-radius: 8px;
             padding: 15px;
             position: relative;
-            height: 260px;
+            height: 250px;
         }
         .chart-title {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            border-left: 3px solid var(--accent-green);
+            font-size: 12px;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            border-left: 3px solid var(--accent-blue);
             padding-left: 8px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
         }
+        .title-edited { border-left-color: var(--accent-orange); }
+        .title-original { border-left-color: var(--accent-pink); }
+        
         .output-panel {
             grid-column: span 2;
             background-color: var(--panel-bg);
@@ -136,7 +139,7 @@
             white-space: pre-wrap;
             font-size: 14px;
             line-height: 1.6;
-            color: #d1d5db;
+            color: #e2e8f0;
         }
         .loading {
             color: var(--accent-pink);
@@ -153,8 +156,8 @@
 <body>
 
     <div class="header">
-        <h1>CHRONOS ENGINE // MODULE-03 // V4.0</h1>
-        <div style="font-size: 12px; color: var(--accent-green);">● MASTER INTELLIGENCE ACTIVE</div>
+        <h1>CHRONOS ULTRA // VER 5.0 // EDITED COMPLETE HACK</h1>
+        <div style="font-size: 12px; color: var(--accent-pink);">● HYPER INTELLIGENCE ACTIVE</div>
     </div>
 
     <div class="container">
@@ -170,15 +173,13 @@
 
             <div class="form-group">
                 <label>2. Target Brand・Store / ブランド名・店舗名</label>
-                <select id="brand-select">
-                    </select>
+                <select id="brand-select"></select>
                 <input type="text" id="brand-custom" placeholder="✍ 別の競合ブランド・店舗名を自由入力">
             </div>
             
             <div class="form-group">
                 <label>3. Product Category / 品種</label>
-                <select id="category-select">
-                    </select>
+                <select id="category-select"></select>
                 <input type="text" id="category-custom" placeholder="✍ 別の具体的な品種を自由入力">
             </div>
 
@@ -217,7 +218,7 @@
                     <option value="パステルカラー（淡いピンク・サックスブルー等）">パステルカラー</option>
                     <option value="ビビッドカラー（原色系・ネオンカラー）">ビビッドカラー</option>
                 </select>
-                <input type="text" id="color-custom" placeholder="✍ 特定の色柄を自由入力（例: インディゴ、グレージュ）">
+                <input type="text" id="color-custom" placeholder="✍ 特定の色柄を自由入力">
             </div>
 
             <div class="form-group">
@@ -226,10 +227,10 @@
                     <option value="">-- 選択なし（全体分析） --</option>
                     <option value="オーバーサイズ・ビッグシルエット">オーバーサイズ・ビッグシルエット</option>
                     <option value="ミニマル・シンプル無地">ミニマル・シンプル無地</option>
-                    <option value="ストリート・カジュアル（ロゴ・プリント）">ストリート・カジュアル（ロゴ）</option>
+                    <option value="ストリート・カジュアル（ロゴ・プリント）">ストリート・カジュアル</option>
                     <option value="クラシック・きれいめ・ビジネス">クラシック・きれいめ</option>
                 </select>
-                <input type="text" id="design-custom" placeholder="✍ デザイン特徴を自由入力（例: クロップド丈、Vネック）">
+                <input type="text" id="design-custom" placeholder="✍ デザイン特徴を自由入力">
             </div>
 
             <div class="form-group">
@@ -237,111 +238,91 @@
                 <select id="material-select">
                     <option value="">-- 選択なし（全体分析） --</option>
                     <option value="天然素材（コットン・綿100% / リネン）">天然素材（コットン/リネン）</option>
-                    <option value="機能性高聚物（ナイロン・ポリエステル・速乾素材）">機能性化学繊維（ポリエステル等）</option>
-                    <option value="高保湿スキンケア成分（ヒアルロン酸・セラミド）">高保湿成分（ヒアルロン酸・セラミド）</option>
-                    <option value="肌質改善・エイジングケア成分（レチノール・ビタミンC）">エイジングケア成分（レチノール系）</option>
+                    <option value="機能性高聚物（ナイロン・ポリエステル・速乾素材）">機能性化学繊維</option>
+                    <option value="高保湿スキンケア成分（ヒアルロン酸・セラミド）">高保湿成分（ヒアルロン酸等）</option>
+                    <option value="肌質改善・エイジングケア成分（レチノール・ビタミンC）">エイジングケア成分</option>
                 </select>
-                <input type="text" id="material-custom" placeholder="✍ 素材や美容成分を自由入力（例: シルク混、シカ成分）">
+                <input type="text" id="material-custom" placeholder="✍ 素材や美容成分を自由入力">
             </div>
 
-            <button class="btn" onclick="runAnalysis()">AI多角分析・グラフ生成</button>
-            <div class="loading" id="loadingText">▶ ENGINE RUNNING CRITICAL DATA...</div>
+            <button class="btn" onclick="runAnalysis()">6大コア分析マトリクス実行</button>
+            <div class="loading" id="loadingText">▶ ENGINE CRUNCHING EDITED BIG DATA SECTOR...</div>
         </div>
 
         <div class="dashboard">
             <div class="chart-container">
-                <div class="chart-title" id="titleProducts">製品売上ランキング（推定数量）</div>
+                <div class="chart-title title-edited">① アソートメント：製品売上・品揃え構成比</div>
                 <canvas id="chartProducts"></canvas>
             </div>
             <div class="chart-container">
-                <div class="chart-title">店舗・ブランド チャネル別シェア比率 (%)</div>
+                <div class="chart-title">② マーケット：販売チャネル別シェア比率 (%)</div>
                 <canvas id="chartChannels"></canvas>
             </div>
             <div class="chart-container">
-                <div class="chart-title">色柄・デザイン・素材別 売上構成比</div>
-                <canvas id="chartDesigns"></canvas>
+                <div class="chart-title title-edited">③ プライシング：競合価格帯別アイテム分布グラフ</div>
+                <canvas id="chartPrices"></canvas>
             </div>
             <div class="chart-container">
-                <div class="chart-title">レビュー感情不満分析（件数順）</div>
+                <div class="chart-title title-edited">④ ディスカウント：平均値引き率・値下げ規模分布</div>
+                <canvas id="chartDiscounts"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title title-edited">⑤ スピード：完売までの平均日数＆再入荷追跡</div>
+                <canvas id="chartSpeeds"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title title-original">⑥ オリジナル：顧客レビュー感情・不満分析（件数順）</div>
                 <canvas id="chartSentiments"></canvas>
             </div>
 
             <div class="output-panel">
-                <div class="chart-title">CHRONOS 商品開発戦略指示書 OUTPUT</div>
-                <div class="output-text" id="outputText">ここにAIの緻密な分析指示書が出力されます。左のパラメータを調整して実行してください。</div>
+                <div class="chart-title title-original">CHRONOS EDITED超越型・商品開発戦略指示書 OUTPUT</div>
+                <div class="output-text" id="outputText">ここにEDITEDの統計データを超越した、AIによるリアルな戦闘指示書が出力されます。</div>
             </div>
         </div>
     </div>
 
     <script>
-        // 業界別データベース
         const industryDb = {
             "アパレル": {
                 brands: [
-                    { val: "AOKI", txt: "AOKI" },
-                    { val: "SHEIN", txt: "SHEIN" },
-                    { val: "ZARA", txt: "ZARA" },
-                    { val: "UNIQLO", txt: "UNIQLO" }
+                    { val: "AOKI", txt: "AOKI" }, { val: "SHEIN", txt: "SHEIN" },
+                    { val: "ZARA", txt: "ZARA" }, { val: "UNIQLO", txt: "UNIQLO" }
                 ],
                 categories: [
-                    { val: "全品種累計", txt: "★全品種累計" },
-                    { val: "Tシャツ/カットソー", txt: "Tシャツ/カットソー" },
-                    { val: "シャツ/ブラウス", txt: "シャツ/ブラウス" },
-                    { val: "ニット/セーター", txt: "ニット/セーター" },
-                    { val: "ワンピース", txt: "ワンピース" },
-                    { val: "アウター/ジャケット", txt: "アウター/ジャケット" },
-                    { val: "パンツ/ボトムス", txt: "パンツ/ボトムス" },
-                    { val: "スカート", txt: "スカート" },
-                    { val: "バッグ/小物", txt: "バッグ/小物" }
+                    { val: "全品種累計", txt: "★全品種累計" }, { val: "Tシャツ/カットソー", txt: "Tシャツ/カットソー" },
+                    { val: "シャツ/ブラウス", txt: "シャツ/ブラウス" }, { val: "ニット/セーター", txt: "ニット/セーター" },
+                    { val: "ワンピース", txt: "ワンピース" }, { val: "アウター/ジャケット", txt: "アウター/ジャケット" },
+                    { val: "パンツ/ボトムス", txt: "パンツ/ボトムス" }
                 ]
             },
             "コスメ・美容": {
                 brands: [
-                    { val: "資生堂", txt: "資生堂 (SHISEIDO)" },
-                    { val: "KATE", txt: "KATE (ケイト)" },
-                    { val: "コーセー", txt: "コーセー (KOSE)" },
-                    { val: "ロレアル", txt: "ロレアル パリ" }
+                    { val: "資生堂", txt: "資生堂 (SHISEIDO)" }, { val: "KATE", txt: "KATE (ケイト)" },
+                    { val: "コーセー", txt: "コーセー (KOSE)" }, { val: "ロレアル", txt: "ロレアル パリ" }
                 ],
                 categories: [
-                    { val: "全品種累計", txt: "★全品種累計" },
-                    { val: "スキンケア/化粧水", txt: "スキンケア/化粧水" },
-                    { val: "美容液/セラム", txt: "美容液/セラム" },
-                    { val: "ファンデーション", txt: "ファンデーション" },
-                    { val: "リップ/口紅", txt: "リップ/口紅" },
-                    { val: "アイシャドウ/マスカラ", txt: "アイシャドウ/マスカラ" }
+                    { val: "全品種累計", txt: "★全品種累計" }, { val: "スキンケア/化粧水", txt: "スキンケア/化粧水" },
+                    { val: "美容液/セラム", txt: "美容液/セラム" }, { val: "ファンデーション", txt: "ファンデーション" },
+                    { val: "リップ/口紅", txt: "リップ/口紅" }
                 ]
             }
         };
 
-        // 業界選択によってブランドと品種を完全に出し分ける魔法の関数
         function syncIndustryOptions() {
             const industry = document.getElementById('industry-select').value;
             const brandSelect = document.getElementById('brand-select');
             const categorySelect = document.getElementById('category-select');
-
-            // 選択肢を一度クリア
-            brandSelect.innerHTML = '';
-            categorySelect.innerHTML = '';
-
-            // ブランドの再展開
+            brandSelect.innerHTML = ''; categorySelect.innerHTML = '';
             industryDb[industry].brands.forEach(b => {
-                let opt = document.createElement('option');
-                opt.value = b.val; opt.textContent = b.txt;
-                brandSelect.appendChild(opt);
+                let opt = document.createElement('option'); opt.value = b.val; opt.textContent = b.txt; brandSelect.appendChild(opt);
             });
-
-            // 品種の再展開
             industryDb[industry].categories.forEach(c => {
-                let opt = document.createElement('option');
-                opt.value = c.val; opt.textContent = c.txt;
-                categorySelect.appendChild(opt);
+                let opt = document.createElement('option'); opt.value = c.val; opt.textContent = c.txt; categorySelect.appendChild(opt);
             });
         }
 
-        // 起動時に初期実行
-        window.onload = function() {
-            syncIndustryOptions();
-        };
+        window.onload = function() { syncIndustryOptions(); };
 
         let charts = {};
 
@@ -353,20 +334,15 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: label,
-                        data: data,
-                        backgroundColor: color,
-                        borderColor: color,
-                        borderWidth: 1
+                        label: label, data: data, backgroundColor: color, borderColor: color, borderWidth: 1
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#9ca3af', font: { size: 10 } } } },
-                    scales: type === 'bar' ? {
-                        x: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af', font: { size: 9 } } },
-                        y: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af', font: { size: 9 } } }
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#9ca3af', font: { size: 9 } } } },
+                    scales: type === 'bar' || type === 'line' ? {
+                        x: { grid: { color: '#1e293b' }, ticks: { color: '#9ca3af', font: { size: 8 } } },
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#9ca3af', font: { size: 8 } } }
                     } : {}
                 }
             });
@@ -381,8 +357,7 @@
         async function runAnalysis() {
             const btn = document.querySelector('.btn');
             const loading = document.getElementById('loadingText');
-            btn.disabled = true;
-            loading.style.display = 'block';
+            btn.disabled = true; loading.style.display = 'block';
 
             const payload = {
                 industry: getHybridValue('industry-select', 'industry-custom'),
@@ -394,8 +369,6 @@
                 design: getHybridValue('design-select', 'design-custom'),
                 material: getHybridValue('material-select', 'material-custom')
             };
-
-            document.getElementById('titleProducts').innerText = `${payload.category} 売上ランキング（推定数量）`;
 
             try {
                 const response = await fetch('/api/analyze', {
@@ -411,18 +384,20 @@
                     return;
                 }
 
-                initChart('chartProducts', 'bar', result.chartProducts.labels, result.chartProducts.data, '推定売上数', '#38bdf8');
+                // 6大コア分析マトリクスを一斉描画！
+                initChart('chartProducts', 'bar', result.chartProducts.labels, result.chartProducts.data, '推定売上・型数', '#38bdf8');
                 initChart('chartChannels', 'pie', result.chartChannels.labels, result.chartChannels.data, 'シェア', ['#38bdf8', '#34d399', '#a78bfa', '#f472b6', '#fbbf24', '#e5e7eb']);
-                initChart('chartDesigns', 'doughnut', result.chartDesigns.labels, result.chartDesigns.data, '構成比', ['#a78bfa', '#f472b6', '#34d399', '#fbbf24']);
+                initChart('chartPrices', 'line', result.chartPrices.labels, result.chartPrices.data, 'アイテム数分布', '#fbbf24');
+                initChart('chartDiscounts', 'doughnut', result.chartDiscounts.labels, result.chartDiscounts.data, '値引き構成比', ['#f97316', '#fbbf24', '#34d399', '#1e293b']);
+                initChart('chartSpeeds', 'bar', result.chartSpeeds.labels, result.chartSpeeds.data, '平均完売日数 / 再入荷数', '#a78bfa');
                 initChart('chartSentiments', 'bar', result.chartSentiments.labels, result.chartSentiments.data, '不満・評価件数', '#f472b6');
 
                 document.getElementById('outputText').innerText = result.commentary;
 
             } catch (error) {
-                document.getElementById('outputText').innerText = `【通信エラー発生】\nサーバーとの通信に失敗しました。\n詳細: ${error.message}`;
+                document.getElementById('outputText').innerText = `【通信エラー発生】\nサーバーとの通信に失敗しました。`;
             } finally {
-                btn.disabled = false;
-                loading.style.display = 'none';
+                btn.disabled = false; loading.style.display = 'none';
             }
         }
     </script>
