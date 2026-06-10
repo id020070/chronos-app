@@ -10,18 +10,21 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'サーバー環境変数に GEMINI_API_KEY が設定されていません。' });
     }
 
-    const colorStr = color ? color : "未指定（全体集計）";
-    const designStr = design ? design : "未指定（全体集計）";
-    const materialStr = material ? material : "未指定（全体集計）";
+    const colorStr = color ? color : "未指定";
+    const designStr = design ? design : "未指定";
+    const materialStr = material ? material : "未指定";
 
     const prompt = `
-あなたは世界最高峰の商業データアナリストであり、アパレルおよびコスメ業界のMD商品開発のスペシャリストです。
-競合分析ツール「EDITED」の全機能を遥かに超越するデータマトリクスを作成してください。
-指定された条件を基に、市場データに即した【極めてリアルな統計数値】を演算シミュレーションし、指定のJSONフォーマットのみで出力してください。前後にJSON以外のテキストは一切含めないでください。
+あなたは世界最高峰の商業データアナリストであり、アパレル・コスメ業界のMD商品開発スペシャリストです。
+競合分析ツール「EDITED」の機能を完全に凌駕する、極めてリアルな市場統計シミュレーション数値を演算し、指定のJSONフォーマットのみで出力してください。前後に説明文などは一切不要です。
 
 【入力パラメータ】
 ・業界: ${industry} / ブランド: ${brand} / 品種: ${category} / チャネル: ${channel} / 国: ${region}
 ・個別条件: 色柄[${colorStr}], デザイン[${designStr}], 素材[${materialStr}]
+
+【お支払い・数値の単位に関する厳格ルール】
+・対象国が「日本」を含む場合は、chartChannelsのデータ（売上高）は【億円】単位の数値（例: 150, 85...）にしてください。
+・対象国が日本以外（全世界、アメリカなど）の場合は、【万ドル】単位の数値にしてください。
 
 【出力必須のJSONフォーマット】
 {
@@ -31,7 +34,7 @@ export default async function handler(req, res) {
   },
   "chartChannels": {
     "labels": ["Amazon", "楽天市場", "Shopee", "eBay", "Qoo10", "自社EC/その他"],
-    "data": [40, 20, 15, 12, 8, 5]
+    "data": [450, 320, 210, 110, 65, 95] 
   },
   "chartPrices": {
     "labels": ["低価格帯", "ボリューム層下限", "ボリューム層上限", "高価格帯"],
@@ -46,10 +49,10 @@ export default async function handler(req, res) {
     "data": [14, 28, 45]
   },
   "chartSentiments": {
-    "labels": ["不満要因1位", "不満要因2位", "ポジティブ評価1位", "不満要因3位"],
-    "data": [110, 75, 50, 25]
+    "labels": ["満足: 〇〇(一番多い満足理由)", "満足: 〇〇(2番目)", "不満: 〇〇(一番多い不満)", "満足: 〇〇(3番目)", "不満: 〇〇(2番目)", "不満: 〇〇(3番目)"],
+    "data": [120, 95, 85, 60, 45, 30]
   },
-  "commentary": "ここに、指定された業界（${industry}）および品種（${category}）の専門家として、価格分布（プライシング）、値引き傾向（ディスカウント）、完売スピード（スピード）の3つのEDITEDデータを徹底的に分析した背景を記述してください。さらに、指定の国（${region}）や販売チャネル（${channel}）で競合（${brand}）を完全に叩き潰すための、超具体的なMD商品開発戦闘指示書（デザイン、素材、原価、価格設定、最適な投入型数、顧客の不満レビューを逆手にとったプロダクト設計）を、熱く実戦的な日本語で記述してください。"
+  "commentary": "ここに、指定された業界（${industry}）のプロとして、上記統計数字の背景を詳細に解説し、指定の国（${region}）や販売チャネル（${channel}）で競合（${brand}）に完全勝利するための、超具体的なMD商品開発戦闘指示書を、熱く実戦的な日本語で記述してください。"
 }
 `;
 
