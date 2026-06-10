@@ -53,8 +53,8 @@ export default async function handler(req, res) {
 `;
 
     try {
-        // 2026年の標準安定モデルである gemini-2.0-flash にアップグレード
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+        // 2026年・有料プランの最新標準モデル「gemini-2.5-flash」へ最終コンバート
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
