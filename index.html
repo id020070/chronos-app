@@ -151,8 +151,8 @@
 <body>
 
     <div class="header">
-        <h1>CHRONOS ENGINE // MODULE-03 // V3.5</h1>
-        <div style="font-size: 12px; color: var(--accent-green);">● STABLE HYBRID CONTROL ACTIVE</div>
+        <h1>CHRONOS ENGINE // MODULE-03 // V3.6</h1>
+        <div style="font-size: 12px; color: var(--accent-green);">● PRODUCTION READY CONTROL ACTIVE</div>
     </div>
 
     <div class="container">
@@ -170,7 +170,6 @@
                 <label>2. Target Brand・Store / ブランド名・店舗名</label>
                 <select id="brand-select">
                     <option value="AOKI">AOKI</option>
-                    <option value="EDITED">EDITED</option>
                     <option value="SHEIN">SHEIN</option>
                     <option value="ZARA">ZARA</option>
                     <option value="UNIQLO">UNIQLO</option>
@@ -294,7 +293,6 @@
             });
         }
 
-        // 自由入力があればそれを最優先、なければセレクトボックスの値を採用する関数
         function getHybridValue(selectId, customId) {
             const customVal = document.getElementById(customId).value.trim();
             if (customVal !== "") return customVal;
