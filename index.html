@@ -41,7 +41,7 @@
         }
         .container {
             display: grid;
-            grid-template-columns: 400px 1fr;
+            grid-template-columns: 410px 1fr;
             gap: 20px;
         }
         .panel {
@@ -49,17 +49,18 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 20px;
+            height: fit-content;
         }
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 15px;
             border-bottom: 1px dashed #1f2937;
-            padding-bottom: 12px;
+            padding-bottom: 10px;
         }
         label {
             display: block;
             font-size: 11px;
             color: var(--accent-blue);
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             text-transform: uppercase;
             font-weight: bold;
         }
@@ -97,6 +98,7 @@
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin-top: 5px;
         }
         .btn:hover {
             opacity: 0.9;
@@ -151,49 +153,32 @@
 <body>
 
     <div class="header">
-        <h1>CHRONOS ENGINE // MODULE-03 // V3.6</h1>
-        <div style="font-size: 12px; color: var(--accent-green);">● PRODUCTION READY CONTROL ACTIVE</div>
+        <h1>CHRONOS ENGINE // MODULE-03 // V4.0</h1>
+        <div style="font-size: 12px; color: var(--accent-green);">● MASTER INTELLIGENCE ACTIVE</div>
     </div>
 
     <div class="container">
         <div class="panel">
             <div class="form-group">
-                <label>1. Industry / 業界</label>
-                <select id="industry-select">
+                <label>1. Industry / 業界セクター</label>
+                <select id="industry-select" onchange="syncIndustryOptions()">
                     <option value="アパレル">アパレル（衣料・ファッション）</option>
                     <option value="コスメ・美容">コスメ・美容（化粧品・スキンケア）</option>
                 </select>
-                <input type="text" id="industry-custom" placeholder="✍ 別の業界を自由入力する場合はここに入力">
+                <input type="text" id="industry-custom" placeholder="✍ 別の業界セクターを自由入力">
             </div>
 
             <div class="form-group">
                 <label>2. Target Brand・Store / ブランド名・店舗名</label>
                 <select id="brand-select">
-                    <option value="AOKI">AOKI</option>
-                    <option value="SHEIN">SHEIN</option>
-                    <option value="ZARA">ZARA</option>
-                    <option value="UNIQLO">UNIQLO</option>
-                    <option value="資生堂">資生堂 (SHISEIDO)</option>
-                    <option value="KATE">KATE</option>
-                </select>
-                <input type="text" id="brand-custom" placeholder="✍ 別のブランド・競合店舗を自由入力">
+                    </select>
+                <input type="text" id="brand-custom" placeholder="✍ 別の競合ブランド・店舗名を自由入力">
             </div>
             
             <div class="form-group">
                 <label>3. Product Category / 品種</label>
                 <select id="category-select">
-                    <option value="全品種累計">★全品種累計</option>
-                    <option value="Tシャツ/カットソー">Tシャツ/カットソー</option>
-                    <option value="シャツ/ブラウス">シャツ/ブラウス</option>
-                    <option value="ニット/セーター">ニット/セーター</option>
-                    <option value="ワンピース">ワンピース</option>
-                    <option value="アウター/ジャケット">アウター/ジャケット</option>
-                    <option value="パンツ/ボトムス">パンツ/ボトムス</option>
-                    <option value="スキンケア/化粧水">スキンケア/化粧水</option>
-                    <option value="美容液/セラム">美容液/セラム</option>
-                    <option value="ファンデーション">ファンデーション</option>
-                    <option value="リップ/口紅">リップ/口紅</option>
-                </select>
+                    </select>
                 <input type="text" id="category-custom" placeholder="✍ 別の具体的な品種を自由入力">
             </div>
 
@@ -208,7 +193,7 @@
                     <option value="Qoo10">Qoo10</option>
                     <option value="自社ECサイト">自社ECサイト</option>
                 </select>
-                <input type="text" id="channel-custom" placeholder="✍ 別のチャネル（例: TikTok Shop等）を自由入力">
+                <input type="text" id="channel-custom" placeholder="✍ 別のチャネルを自由入力">
             </div>
 
             <div class="form-group">
@@ -220,18 +205,43 @@
                     <option value="東南アジア">東南アジア</option>
                     <option value="ヨーロッパ">ヨーロッパ</option>
                 </select>
-                <input type="text" id="region-custom" placeholder="✍ 別の特定の国名（例: 台湾、英国）を自由入力">
+                <input type="text" id="region-custom" placeholder="✍ 別の特定の国名を自由入力">
             </div>
 
             <div class="form-group">
-                <label>6. Attributes / 色柄・素材・デザイン傾向</label>
-                <select id="attributes-select">
-                    <option value="モノトーン, コットン, オーバーサイズ">モノトーン, コットン, オーバーサイズ</option>
-                    <option value="パステルカラー, シルク, フェミニン">パステルカラー, シルク, フェミニン</option>
-                    <option value="オーガニック, 無添加, 低刺激（コスメ用）">オーガニック, 無添加, 低刺激（コスメ用）</option>
-                    <option value="高保湿, ヒアルロン酸, アンチエイジング（コスメ用）">高保湿, ヒアルロン酸, アンチエイジング</option>
+                <label>6. Color / 色柄</label>
+                <select id="color-select">
+                    <option value="">-- 選択なし（全体分析） --</option>
+                    <option value="モノトーン（ブラック・ホワイト・グレー）">モノトーン（ブラック・ホワイト）</option>
+                    <option value="アースカラー（ベージュ・カーキ・ブラウン）">アースカラー（ベージュ・カーキ）</option>
+                    <option value="パステルカラー（淡いピンク・サックスブルー等）">パステルカラー</option>
+                    <option value="ビビッドカラー（原色系・ネオンカラー）">ビビッドカラー</option>
                 </select>
-                <input type="text" id="attributes-custom" placeholder="✍ 自由な属性キーワード（コンマ区切り）">
+                <input type="text" id="color-custom" placeholder="✍ 特定の色柄を自由入力（例: インディゴ、グレージュ）">
+            </div>
+
+            <div class="form-group">
+                <label>7. Design / デザイン傾向</label>
+                <select id="design-select">
+                    <option value="">-- 選択なし（全体分析） --</option>
+                    <option value="オーバーサイズ・ビッグシルエット">オーバーサイズ・ビッグシルエット</option>
+                    <option value="ミニマル・シンプル無地">ミニマル・シンプル無地</option>
+                    <option value="ストリート・カジュアル（ロゴ・プリント）">ストリート・カジュアル（ロゴ）</option>
+                    <option value="クラシック・きれいめ・ビジネス">クラシック・きれいめ</option>
+                </select>
+                <input type="text" id="design-custom" placeholder="✍ デザイン特徴を自由入力（例: クロップド丈、Vネック）">
+            </div>
+
+            <div class="form-group">
+                <label>8. Material・Ingredients / 素材・成分</label>
+                <select id="material-select">
+                    <option value="">-- 選択なし（全体分析） --</option>
+                    <option value="天然素材（コットン・綿100% / リネン）">天然素材（コットン/リネン）</option>
+                    <option value="機能性高聚物（ナイロン・ポリエステル・速乾素材）">機能性化学繊維（ポリエステル等）</option>
+                    <option value="高保湿スキンケア成分（ヒアルロン酸・セラミド）">高保湿成分（ヒアルロン酸・セラミド）</option>
+                    <option value="肌質改善・エイジングケア成分（レチノール・ビタミンC）">エイジングケア成分（レチノール系）</option>
+                </select>
+                <input type="text" id="material-custom" placeholder="✍ 素材や美容成分を自由入力（例: シルク混、シカ成分）">
             </div>
 
             <button class="btn" onclick="runAnalysis()">AI多角分析・グラフ生成</button>
@@ -248,7 +258,7 @@
                 <canvas id="chartChannels"></canvas>
             </div>
             <div class="chart-container">
-                <div class="chart-title">色柄・素材・デザイン別 売上構成比</div>
+                <div class="chart-title">色柄・デザイン・素材別 売上構成比</div>
                 <canvas id="chartDesigns"></canvas>
             </div>
             <div class="chart-container">
@@ -264,6 +274,75 @@
     </div>
 
     <script>
+        // 業界別データベース
+        const industryDb = {
+            "アパレル": {
+                brands: [
+                    { val: "AOKI", txt: "AOKI" },
+                    { val: "SHEIN", txt: "SHEIN" },
+                    { val: "ZARA", txt: "ZARA" },
+                    { val: "UNIQLO", txt: "UNIQLO" }
+                ],
+                categories: [
+                    { val: "全品種累計", txt: "★全品種累計" },
+                    { val: "Tシャツ/カットソー", txt: "Tシャツ/カットソー" },
+                    { val: "シャツ/ブラウス", txt: "シャツ/ブラウス" },
+                    { val: "ニット/セーター", txt: "ニット/セーター" },
+                    { val: "ワンピース", txt: "ワンピース" },
+                    { val: "アウター/ジャケット", txt: "アウター/ジャケット" },
+                    { val: "パンツ/ボトムス", txt: "パンツ/ボトムス" },
+                    { val: "スカート", txt: "スカート" },
+                    { val: "バッグ/小物", txt: "バッグ/小物" }
+                ]
+            },
+            "コスメ・美容": {
+                brands: [
+                    { val: "資生堂", txt: "資生堂 (SHISEIDO)" },
+                    { val: "KATE", txt: "KATE (ケイト)" },
+                    { val: "コーセー", txt: "コーセー (KOSE)" },
+                    { val: "ロレアル", txt: "ロレアル パリ" }
+                ],
+                categories: [
+                    { val: "全品種累計", txt: "★全品種累計" },
+                    { val: "スキンケア/化粧水", txt: "スキンケア/化粧水" },
+                    { val: "美容液/セラム", txt: "美容液/セラム" },
+                    { val: "ファンデーション", txt: "ファンデーション" },
+                    { val: "リップ/口紅", txt: "リップ/口紅" },
+                    { val: "アイシャドウ/マスカラ", txt: "アイシャドウ/マスカラ" }
+                ]
+            }
+        };
+
+        // 業界選択によってブランドと品種を完全に出し分ける魔法の関数
+        function syncIndustryOptions() {
+            const industry = document.getElementById('industry-select').value;
+            const brandSelect = document.getElementById('brand-select');
+            const categorySelect = document.getElementById('category-select');
+
+            // 選択肢を一度クリア
+            brandSelect.innerHTML = '';
+            categorySelect.innerHTML = '';
+
+            // ブランドの再展開
+            industryDb[industry].brands.forEach(b => {
+                let opt = document.createElement('option');
+                opt.value = b.val; opt.textContent = b.txt;
+                brandSelect.appendChild(opt);
+            });
+
+            // 品種の再展開
+            industryDb[industry].categories.forEach(c => {
+                let opt = document.createElement('option');
+                opt.value = c.val; opt.textContent = c.txt;
+                categorySelect.appendChild(opt);
+            });
+        }
+
+        // 起動時に初期実行
+        window.onload = function() {
+            syncIndustryOptions();
+        };
+
         let charts = {};
 
         function initChart(id, type, labels, data, label, color) {
@@ -311,7 +390,9 @@
                 category: getHybridValue('category-select', 'category-custom'),
                 channel: getHybridValue('channel-select', 'channel-custom'),
                 region: getHybridValue('region-select', 'region-custom'),
-                attributes: getHybridValue('attributes-select', 'attributes-custom')
+                color: getHybridValue('color-select', 'color-custom'),
+                design: getHybridValue('design-select', 'design-custom'),
+                material: getHybridValue('material-select', 'material-custom')
             };
 
             document.getElementById('titleProducts').innerText = `${payload.category} 売上ランキング（推定数量）`;
