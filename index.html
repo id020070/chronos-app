@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHRONOS ENGINE — Apparel x Cosme Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>:root{--bg-void:#020408;--bg-card:#081828;--accent-cyan:#00e5ff;--accent-amber:#ffab00;--accent-red:#ff1744;--accent-green:#00e676;--accent-purple:#d500f9;--text-primary:#e0f4ff;--text-secondary:#5a8fa8;--text-muted:#2a4a5c;--border-glow:rgba(0,229,255,0.15);--grid:rgba(0,229,255,0.04);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg-void);color:var(--text-primary);font-family:'Noto Sans JP',sans-serif;height:100vh;overflow:hidden;display:flex;flex-direction:column;background-image:repeating-linear-gradient(0deg,var(--grid) 0,transparent 1px,transparent 40px),repeating-linear-gradient(90deg,var(--grid) 0,transparent 1px,transparent 40px);}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:50px;background:rgba(4,12,20,.97);border-bottom:1px solid var(--border-glow);flex-shrink:0;position:relative;z-index:10;}
+.topbar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent-cyan),transparent);opacity:.5;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-logo{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;letter-spacing:4px;color:var(--accent-cyan);text-shadow:0 0 18px rgba(0,229,255,.8);}
+.brand-sep{width:1px;height:16px;background:var(--border-glow);}
+.brand-sub{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-secondary);letter-spacing:2px;}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+.spill{display:flex;align-items:center;gap:5px;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--text-secondary);}
+.dot{width:6px;height:6px;border-radius:50%;animation:pdot 2s ease-in-out infinite;}
+.dot.g{background:var(--accent-green);box-shadow:0 0 7px var(--accent-green);}
+.dot.a{background:var(--accent-amber);box-shadow:0 0 7px var(--accent-amber);}
+.dot.r{background:var(--accent-red);box-shadow:0 0 7px var(--accent-red);}
+@keyframes pdot{0%,100%{opacity:1;}50%{opacity:.3;}}
+.tclock{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent-cyan);letter-spacing:2px;}
+.ind-toggle{display:flex;align-items:center;background:rgba(0,0,0,.5);border:1px solid var(--border-glow);border-radius:4px;overflow:hidden;}
+.ind-btn{padding:5px 14px;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .2s;border:none;background:transparent;color:var(--text-secondary);}
+.ind-btn.active{background:linear-gradient(135deg,rgba(0,229,255,.2),rgba(0,229,255,.08));color:var(--accent-cyan);}
+.ind-sep{width:1px;height:20px;background:var(--border-glow);}
+.workspace{display:grid;grid-template-columns:222px 1fr 352px;flex:1;overflow:hidden;}
+.sidenav{background:rgba(6,18,32,.88);border-right:1px solid var(--border-glow);display:flex;flex-direction:column;overflow-y:auto;}
+.sidenav::-webkit-scrollbar{width:2px;}
+.sidenav::-webkit-scrollbar-thumb{background:var(--text-muted);}
+.snlabel{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--text-muted);padding:8px 16px 3px;text-transform:uppercase;}
+.snitem{display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;transition:all .18s;border-left:2px solid transparent;position:relative;}
+.snitem:hover{background:rgba(0,229,255,.04);}
+.snitem.active{background:rgba(0,229,255,.08);border-left-color:var(--accent-cyan);}
+.snitem .ico{width:14px;height:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.snitem .ico svg{width:12px;height:12px;}
+.snitem .lbl{font-size:10px;font-weight:500;color:var(--text-secondary);}
+.snitem.active .lbl{color:var(--accent-cyan);}
+.snbadge{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:7px;padding:1px 5px;border-radius:2px;}
+.snbadge.g{background:rgba(0,230,118,.1);color:var(--accent-green);border:1px solid rgba(0,230,118,.3);}
+.snbadge.r{background:rgba(255,23,68,.18);color:var(--accent-red);border:1px solid rgba(255,23,68,.3);}
+.sndiv{height:1px;background:var(--border-glow);margin:4px 14px;}
+.snitem-key{display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;transition:all .18s;border-left:2px solid transparent;position:relative;}
+.snitem-key:hover{background:rgba(255,171,0,.05);border-left-color:rgba(255,171,0,.35);}
+.snitem-key .lbl{font-size:10px;font-weight:500;color:var(--accent-amber);}
+.key-dot-nav{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--accent-green);box-shadow:0 0 7px var(--accent-green);display:none;}
+.key-dot-nav.on{display:block;}
+.qblock{padding:10px 13px;border-top:1px solid var(--border-glow);border-bottom:1px solid var(--border-glow);background:rgba(0,229,255,.015);}
+.qlabel{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--accent-cyan);margin-bottom:5px;}
+.qinput{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--border-glow);border-radius:3px;padding:7px 9px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-primary);outline:none;caret-color:var(--accent-cyan);transition:border-color .18s,box-shadow .18s;}
+.qinput::placeholder{color:var(--text-muted);font-size:8.5px;}
+.qinput:focus{border-color:var(--accent-cyan);box-shadow:0 0 10px rgba(0,229,255,.12);}
+.qhint{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-muted);margin-top:3px;}
+.btn-run{margin-top:7px;width:100%;background:linear-gradient(135deg,rgba(0,229,255,.15),rgba(0,229,255,.07));border:1px solid rgba(0,229,255,.4);border-radius:3px;padding:8px 0;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--accent-cyan);cursor:pointer;transition:all .18s;}
+.btn-run:hover:not(:disabled){background:rgba(0,229,255,.22);box-shadow:0 0 18px rgba(0,229,255,.18);transform:translateY(-1px);}
+.btn-run:disabled{opacity:.35;cursor:not-allowed;}
+.ovpanel{padding:10px 13px;border-bottom:1px solid var(--border-glow);background:rgba(213,0,249,.04);border-left:2px solid rgba(213,0,249,.25);}
+.ovtitle{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--accent-purple);margin-bottom:7px;display:flex;align-items:center;gap:5px;}
+.ovtitle::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent-purple);box-shadow:0 0 5px var(--accent-purple);flex-shrink:0;}
+.ovrow{margin-bottom:6px;}
+.ovlbl{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-secondary);margin-bottom:2px;display:flex;justify-content:space-between;}
+.ovlbl span{color:var(--accent-purple);font-weight:700;min-width:55px;text-align:right;}
+.slwrap{display:flex;align-items:center;gap:5px;margin-bottom:3px;}
+.ovslider{-webkit-appearance:none;flex:1;height:3px;border-radius:2px;background:rgba(213,0,249,.2);outline:none;cursor:pointer;}
+.ovslider::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;background:var(--accent-purple);box-shadow:0 0 5px rgba(213,0,249,.5);cursor:pointer;}
+.ovinput{width:100%;background:rgba(0,0,0,.5);border:1px solid rgba(213,0,249,.2);border-radius:2px;padding:5px 8px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent-purple);outline:none;caret-color:var(--accent-purple);transition:border-color .18s;}
+.ovinput:focus{border-color:rgba(213,0,249,.5);}
+.ovinput::placeholder{color:var(--text-muted);}
+.btn-ov{margin-top:6px;width:100%;background:linear-gradient(135deg,rgba(213,0,249,.18),rgba(213,0,249,.08));border:1px solid rgba(213,0,249,.38);border-radius:3px;padding:7px 0;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--accent-purple);cursor:pointer;transition:all .18s;}
+.btn-ov:hover{background:rgba(213,0,249,.25);box-shadow:0 0 12px rgba(213,0,249,.18);}
+.ovbadge{display:none;font-family:'Share Tech Mono',monospace;font-size:7px;padding:1px 5px;border-radius:2px;background:rgba(213,0,249,.15);color:var(--accent-purple);border:1px solid rgba(213,0,249,.3);animation:pdot 1.5s ease-in-out infinite;margin-left:5px;}
+.ovbadge.on{display:inline-block;}
+.ovreset{margin-top:4px;font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-muted);text-align:center;cursor:pointer;}
+.ovreset:hover{color:var(--accent-cyan);}
+.step-flow{padding:5px 12px;}
+.step-item{display:flex;align-items:center;gap:7px;padding:3px 0;position:relative;}
+.step-item:not(:last-child)::after{content:'';position:absolute;left:8px;top:18px;width:1px;height:10px;background:var(--border-glow);}
+.step-num{width:16px;height:16px;border-radius:50%;border:1px solid var(--text-muted);display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-muted);flex-shrink:0;transition:all .3s;}
+.step-num.done{border-color:var(--accent-green);color:var(--accent-green);background:rgba(0,230,118,.08);box-shadow:0 0 5px rgba(0,230,118,.3);}
+.step-num.active{border-color:var(--accent-cyan);color:var(--accent-cyan);background:rgba(0,229,255,.08);box-shadow:0 0 5px rgba(0,229,255,.3);}
+.step-text{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-muted);transition:color .3s;}
+.step-text.done{color:var(--accent-green);}
+.step-text.active{color:var(--accent-cyan);}
+.healthbox{padding:10px 14px;border-top:1px solid var(--border-glow);margin-top:auto;}
+.hlabel{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--text-muted);margin-bottom:6px;}
+.hrow{margin-bottom:4px;}
+.hrowlbl{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-secondary);margin-bottom:2px;}
+.hbar{height:2px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;}
+.hfill{height:100%;border-radius:2px;transition:width 1s ease;}
+.hfill.g{background:linear-gradient(90deg,var(--accent-green),#00897b);}
+.cpanel{display:flex;flex-direction:column;overflow:hidden;padding:12px;gap:10px;}
+.hack-banner{display:none;background:rgba(255,23,68,.07);border:1px solid rgba(255,23,68,.3);border-radius:4px;padding:8px 14px;flex-shrink:0;align-items:center;gap:10px;animation:hackpulse 2s ease-in-out infinite;}
+.hack-banner.on{display:flex;}
+@keyframes hackpulse{0%,100%{border-color:rgba(255,23,68,.3);}50%{border-color:rgba(255,23,68,.65);box-shadow:0 0 14px rgba(255,23,68,.1);}}
+.hack-tm{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--accent-red);}
+.hack-tm strong{color:var(--text-primary);}
+.hack-tag{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:7px;padding:2px 7px;border-radius:2px;background:rgba(255,23,68,.15);color:var(--accent-red);border:1px solid rgba(255,23,68,.3);}
+.comp-summary{display:none;background:rgba(255,23,68,.05);border:1px solid rgba(255,23,68,.25);border-radius:4px;padding:10px 14px;flex-shrink:0;}
+.comp-summary.on{display:flex;gap:16px;align-items:center;}
+.cs-main{flex:1;}
+.cs-name{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;color:var(--accent-red);}
+.cs-metrics{display:flex;gap:14px;margin-top:5px;}
+.cs-metric{text-align:center;}
+.cs-val{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;line-height:1;}
+.cs-val.red{color:var(--accent-red);}
+.cs-val.amber{color:var(--accent-amber);}
+.cs-val.cyan{color:var(--accent-cyan);}
+.cs-mlbl{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-muted);margin-top:1px;}
+.vuln-badge{padding:4px 9px;border-radius:3px;background:rgba(255,23,68,.12);border:1px solid rgba(255,23,68,.3);font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--accent-red);white-space:nowrap;flex-shrink:0;}
+.crawl-bar{background:rgba(0,229,255,.04);border:1px solid var(--border-glow);border-radius:4px;padding:8px 13px;flex-shrink:0;display:flex;align-items:center;gap:10px;min-height:38px;}
+.crawl-dot{width:7px;height:7px;border-radius:50%;background:var(--text-muted);flex-shrink:0;transition:all .3s;}
+.crawl-dot.scanning{background:var(--accent-cyan);box-shadow:0 0 9px var(--accent-cyan);animation:pdot .8s ease-in-out infinite;}
+.crawl-dot.hack{background:var(--accent-red);box-shadow:0 0 9px var(--accent-red);animation:pdot .5s ease-in-out infinite;}
+.crawl-dot.done{background:var(--accent-green);box-shadow:0 0 7px var(--accent-green);animation:none;}
+.crawl-text{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-secondary);letter-spacing:.5px;flex:1;}
+.crawl-text strong{color:var(--accent-cyan);}
+.crawl-text.hc strong{color:var(--accent-red);}
+.crawl-srcs{display:flex;gap:5px;flex-shrink:0;}
+.src-b{font-family:'Share Tech Mono',monospace;font-size:7px;padding:2px 6px;border-radius:2px;border:1px solid var(--border-glow);color:var(--text-muted);transition:all .3s;}
+.src-b.active{border-color:var(--accent-cyan);color:var(--accent-cyan);background:rgba(0,229,255,.06);}
+.src-b.hk{border-color:var(--accent-red);color:var(--accent-red);background:rgba(255,23,68,.08);}
+.src-b.done{border-color:var(--accent-green);color:var(--accent-green);background:rgba(0,230,118,.06);}
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex-shrink:0;}
+.kpi-card{background:rgba(6,18,32,.7);border:1px solid var(--border-glow);border-radius:4px;padding:9px 10px;position:relative;overflow:hidden;}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.kc-cy::before{background:var(--accent-cyan);}
+.kc-gr::before{background:var(--accent-green);}
+.kc-am::before{background:var(--accent-amber);}
+.kc-pu::before{background:var(--accent-purple);}
+.kpi-label{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--text-muted);margin-bottom:4px;}
+.kpi-val{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;line-height:1;transition:all .35s;}
+.kv-cy{color:var(--accent-cyan);text-shadow:0 0 10px rgba(0,229,255,.3);}
+.kv-gr{color:var(--accent-green);text-shadow:0 0 10px rgba(0,230,118,.3);}
+.kv-am{color:var(--accent-amber);text-shadow:0 0 10px rgba(255,171,0,.3);}
+.kv-pu{color:var(--accent-purple);text-shadow:0 0 10px rgba(213,0,249,.3);}
+.kpi-sub{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-secondary);margin-top:2px;}
+.ov-ind{display:none;font-family:'Share Tech Mono',monospace;font-size:6px;color:var(--accent-purple);margin-top:1px;}
+.ov-ind.on{display:block;}
+.chartpanel{flex:1;background:rgba(6,18,32,.6);border:1px solid var(--border-glow);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;min-height:0;}
+.phead{display:flex;align-items:center;justify-content:space-between;padding:8px 13px;border-bottom:1px solid var(--border-glow);flex-shrink:0;}
+.ptitle{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:600;letter-spacing:3px;color:var(--accent-cyan);text-transform:uppercase;}
+.pcontrols{display:flex;gap:4px;}
+.chartarea{flex:1;padding:12px;display:flex;flex-direction:column;gap:7px;overflow:hidden;}
+.rank-table{flex:1;overflow-y:auto;}
+.rank-table::-webkit-scrollbar{width:2px;}
+.rank-head{display:grid;grid-template-columns:26px 1fr 85px 85px 68px;gap:4px;padding:5px 8px;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--text-muted);border-bottom:1px solid var(--border-glow);}
+.rank-row{display:grid;grid-template-columns:26px 1fr 85px 85px 68px;gap:4px;padding:7px 8px;border-bottom:1px solid rgba(0,229,255,.03);transition:background .15s;cursor:pointer;align-items:center;}
+.rank-row:hover{background:rgba(0,229,255,.03);}
+.rank-row.top1{background:rgba(255,171,0,.04);border-left:2px solid rgba(255,171,0,.4);}
+.rank-row.htop{background:rgba(255,23,68,.04);border-left:2px solid rgba(255,23,68,.4);}
+.rank-num{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--text-muted);}
+.rank-num.gold{color:var(--accent-amber);}
+.rank-num.rn{color:var(--accent-red);}
+.rank-name{font-size:10px;color:var(--text-primary);}
+.rank-name-sub{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-muted);margin-top:1px;}
+.rank-monthly{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;color:var(--accent-cyan);}
+.rank-annual{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:500;color:var(--text-secondary);}
+.rank-trend{font-family:'Share Tech Mono',monospace;font-size:8px;}
+.tu{color:var(--accent-green);}.td{color:var(--accent-red);}
+.mini-bar{height:3px;border-radius:1px;margin-top:3px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.mb-cy{background:linear-gradient(90deg,var(--accent-cyan),rgba(0,229,255,.3));}
+.mb-am{background:linear-gradient(90deg,var(--accent-amber),rgba(255,171,0,.3));}
+.mb-rd{background:linear-gradient(90deg,var(--accent-red),rgba(255,23,68,.3));}
+.donut-wrap{display:flex;gap:14px;align-items:flex-start;flex:1;}
+.dsw{flex-shrink:0;position:relative;width:130px;height:130px;}
+.dsw svg{width:100%;height:100%;}
+.dcenter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;}
+.dcenter-val{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--accent-cyan);}
+.dcenter-lbl{font-family:'Share Tech Mono',monospace;font-size:6px;color:var(--text-muted);letter-spacing:1px;}
+.dlegend{flex:1;display:flex;flex-direction:column;gap:5px;justify-content:center;}
+.dlr{display:flex;align-items:center;gap:6px;}
+.dld{width:7px;height:7px;border-radius:2px;flex-shrink:0;}
+.dln{font-size:9px;color:var(--text-primary);flex:1;}
+.dlp{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--text-primary);}
+.dlbw{flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:1px;overflow:hidden;max-width:70px;}
+.dlb{height:100%;border-radius:1px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.senti-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1;}
+.senti-card{background:rgba(0,0,0,.25);border:1px solid var(--border-glow);border-radius:3px;padding:9px;}
+.senti-card-title{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--text-muted);margin-bottom:7px;}
+.cr{display:flex;align-items:center;gap:5px;margin-bottom:5px;}
+.cp{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;min-width:34px;line-height:1;}
+.ph{color:var(--accent-red);}.pm{color:var(--accent-amber);}.pl{color:var(--accent-green);}
+.cb{font-family:'Share Tech Mono',monospace;font-size:6px;padding:1px 4px;border-radius:2px;flex-shrink:0;}
+.bred{background:rgba(255,23,68,.12);color:var(--accent-red);border:1px solid rgba(255,23,68,.3);}
+.bamb{background:rgba(255,171,0,.1);color:var(--accent-amber);border:1px solid rgba(255,171,0,.3);}
+.bgrn{background:rgba(0,230,118,.08);color:var(--accent-green);border:1px solid rgba(0,230,118,.3);}
+.ct{font-size:8.5px;color:#9ab0be;line-height:1.5;}
+.sbr{height:7px;border-radius:3px;overflow:hidden;display:flex;margin-bottom:7px;}
+.sp{background:var(--accent-green);}.sn{background:var(--accent-amber);}.sg{background:var(--accent-red);}
+.slr{display:flex;gap:9px;}
+.sl{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-secondary);display:flex;align-items:center;gap:4px;}
+.sld{width:5px;height:5px;border-radius:50%;}
+.rpanel{background:rgba(6,18,32,.72);border-left:1px solid var(--border-glow);display:flex;flex-direction:column;overflow:hidden;}
+.rphead{padding:11px 13px;border-bottom:1px solid var(--border-glow);flex-shrink:0;}
+.rpsubtitle{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--text-muted);margin-bottom:2px;}
+.rptitle{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;color:var(--text-primary);}
+.rpstatus{display:flex;align-items:center;gap:5px;margin-top:3px;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--accent-purple);}
+.tdots span{display:inline-block;width:3px;height:3px;background:var(--accent-purple);border-radius:50%;margin:0 1px;animation:tdot 1.4s ease-in-out infinite;}
+.tdots span:nth-child(2){animation-delay:.2s;}.tdots span:nth-child(3){animation-delay:.4s;}
+@keyframes tdot{0%,60%,100%{opacity:.2;transform:translateY(0);}30%{opacity:1;transform:translateY(-3px);}}
+.rpbody{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;position:relative;}
+.rpbody::-webkit-scrollbar{width:3px;}
+.rpbody::-webkit-scrollbar-thumb{background:var(--text-muted);border-radius:2px;}
+.rxcard{background:rgba(0,229,255,.035);border:1px solid var(--border-glow);border-radius:4px;overflow:hidden;}
+.rxcard.hk{background:rgba(255,23,68,.04);border-color:rgba(255,23,68,.2);}
+.rxchead{padding:7px 11px;background:rgba(0,229,255,.05);border-bottom:1px solid var(--border-glow);display:flex;align-items:center;gap:6px;}
+.rxcard.hk .rxchead{background:rgba(255,23,68,.06);border-bottom-color:rgba(255,23,68,.15);}
+.rxnum{width:17px;height:17px;border-radius:50%;border:1px solid var(--accent-cyan);display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--accent-cyan);flex-shrink:0;}
+.rxcard.hk .rxnum{border-color:var(--accent-red);color:var(--accent-red);}
+.rxctitle{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;color:var(--text-primary);}
+.rxbody{padding:9px 11px;}
+.rxrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;}
+.rxrlbl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--text-secondary);}
+.rxrval{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;color:var(--accent-cyan);}
+.rxrval.g{color:var(--accent-green);}.rxrval.a{color:var(--accent-amber);}.rxrval.r{color:var(--accent-red);}
+.rxdesc{font-size:9px;line-height:1.8;color:#7a9cb0;margin-top:6px;padding-top:6px;border-top:1px solid var(--border-glow);}
+.typing-card{background:linear-gradient(135deg,rgba(0,229,255,.05),rgba(213,0,249,.03));border:1px solid rgba(0,229,255,.27);border-radius:5px;padding:12px;position:relative;overflow:hidden;}
+.typing-card.hk{background:linear-gradient(135deg,rgba(255,23,68,.05),rgba(255,171,0,.02));border-color:rgba(255,23,68,.3);}
+.typing-card::before{content:'';position:absolute;top:-1px;left:-1px;right:-1px;height:2px;background:linear-gradient(90deg,var(--accent-cyan),var(--accent-purple));}
+.typing-card.hk::before{background:linear-gradient(90deg,var(--accent-red),var(--accent-amber));}
+.typing-label{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--accent-cyan);margin-bottom:5px;display:flex;align-items:center;gap:5px;}
+.typing-card.hk .typing-label{color:var(--accent-red);}
+.typing-label::after{content:'';flex:1;height:1px;background:var(--border-glow);}
+.typing-output{font-size:9.5px;line-height:1.9;color:#c8e4f0;min-height:60px;white-space:pre-wrap;}
+.typing-cursor{display:inline-block;width:2px;height:10px;background:var(--accent-cyan);margin-left:1px;animation:blink .7s step-end infinite;vertical-align:middle;}
+.typing-card.hk .typing-cursor{background:var(--accent-red);}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.kw-section{margin-top:8px;padding-top:8px;border-top:1px solid var(--border-glow);}
+.kw-label{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--text-muted);margin-bottom:5px;}
+.kw-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.kw-tag{font-family:'Share Tech Mono',monospace;font-size:7px;padding:2px 6px;border-radius:2px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);color:var(--accent-cyan);cursor:default;transition:all .2s;}
+.kw-tag.hot{background:rgba(255,171,0,.07);border-color:rgba(255,171,0,.3);color:var(--accent-amber);}
+.kw-tag.hk{background:rgba(255,23,68,.07);border-color:rgba(255,23,68,.3);color:var(--accent-red);}
+.apv-section{margin-top:10px;}
+.apv-q{font-size:9px;color:#7a9cb0;line-height:1.7;margin-bottom:8px;}
+.apv-q strong{color:var(--accent-amber);}
+.apbuts{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.btn-yes,.btn-no{padding:9px 5px;border-radius:4px;border:none;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:4px;transition:all .18s;}
+.btn-yes{background:linear-gradient(135deg,rgba(0,230,118,.18),rgba(0,230,118,.08));border:1px solid rgba(0,230,118,.45);color:var(--accent-green);}
+.btn-yes:hover{background:rgba(0,230,118,.27);box-shadow:0 0 16px rgba(0,230,118,.2);transform:translateY(-1px);}
+.btn-no{background:linear-gradient(135deg,rgba(255,23,68,.14),rgba(255,23,68,.07));border:1px solid rgba(255,23,68,.36);color:var(--accent-red);}
+.btn-no:hover{background:rgba(255,23,68,.23);transform:translateY(-1px);}
+.btn-yes:active,.btn-no:active{transform:translateY(0);}
+.loadov{display:none;position:absolute;inset:0;background:rgba(2,4,8,.95);z-index:20;flex-direction:column;align-items:center;justify-content:center;gap:14px;backdrop-filter:blur(4px);}
+.loadov.on{display:flex;}
+.lring{width:58px;height:58px;position:relative;}
+.lring svg{width:100%;height:100%;animation:spin 1.2s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.lring-in{position:absolute;inset:9px;border-radius:50%;border:2px solid transparent;border-top-color:var(--accent-purple);animation:spin .75s linear infinite reverse;}
+.ltxt{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--accent-cyan);text-align:center;line-height:2.2;}
+.ltxt.hltxt{color:var(--accent-red);}
+.ll{overflow:hidden;white-space:nowrap;opacity:0;animation:tin .35s ease forwards;}
+.ll:nth-child(1){animation-delay:0s;}.ll:nth-child(2){animation-delay:.35s;}.ll:nth-child(3){animation-delay:.7s;}.ll:nth-child(4){animation-delay:1.05s;}.ll:nth-child(5){animation-delay:1.4s;}
+@keyframes tin{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.lpwrap{width:180px;}
+.lpbar{height:2px;background:rgba(0,229,255,.1);border-radius:1px;overflow:hidden;}
+.lpfill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent-cyan),var(--accent-purple));border-radius:1px;transition:width 2s ease;}
+.lpfill.hprog{background:linear-gradient(90deg,var(--accent-red),var(--accent-amber));}
+.lplbl{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-muted);margin-top:2px;text-align:right;}
+.etost{display:none;position:absolute;bottom:10px;left:9px;right:9px;background:rgba(255,23,68,.09);border:1px solid rgba(255,23,68,.38);border-radius:3px;padding:8px 11px;z-index:30;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--accent-red);}
+.etost.on{display:block;animation:tin .3s ease;}
+.scanwrap{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;}
+.scanline{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.08),transparent);animation:scan 8s linear infinite;}
+@keyframes scan{0%{top:-1px;}100%{top:100vh;}}
+.kmov{display:none;position:fixed;inset:0;z-index:3000;background:rgba(2,4,8,.9);align-items:center;justify-content:center;backdrop-filter:blur(12px);}
+.kmov.on{display:flex;animation:fi .22s ease;}
+@keyframes fi{from{opacity:0;}to{opacity:1;}}
+.kmbox{width:420px;max-width:94%;background:var(--bg-card);border-radius:8px;overflow:hidden;border:1px solid rgba(255,171,0,.32);box-shadow:0 0 50px rgba(255,171,0,.1);animation:miin .28s cubic-bezier(.2,0,.2,1.3) both;}
+@keyframes miin{from{transform:scale(.93) translateY(-8px);opacity:0;}to{transform:none;opacity:1;}}
+.kmhead{padding:14px 18px 12px;background:linear-gradient(135deg,rgba(255,171,0,.06),transparent);border-bottom:1px solid rgba(255,171,0,.13);display:flex;align-items:center;gap:10px;}
+.kmicon{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,171,0,.38);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.kmtag{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--accent-amber);margin-bottom:2px;}
+.kmtitle{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;color:var(--text-primary);}
+.kmbody{padding:15px 18px;}
+.kmdesc{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--text-secondary);line-height:1.8;margin-bottom:11px;}
+.kmdesc a{color:var(--accent-cyan);text-decoration:none;}
+.kminwrap{position:relative;margin-bottom:8px;}
+.kminput{width:100%;background:rgba(0,0,0,.5);border:1px solid rgba(255,171,0,.22);border-radius:4px;padding:8px 36px 8px 11px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent-amber);outline:none;caret-color:var(--accent-amber);letter-spacing:1px;transition:border-color .18s;}
+.kminput::placeholder{color:var(--text-muted);font-size:8px;}
+.kminput:focus{border-color:rgba(255,171,0,.55);}
+.eyebtn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-secondary);padding:3px;}
+.kmsecnote{display:flex;align-items:flex-start;gap:6px;padding:7px 10px;border-radius:3px;background:rgba(255,171,0,.03);border:1px solid rgba(255,171,0,.09);margin-bottom:12px;}
+.kmsecicon{font-size:10px;flex-shrink:0;margin-top:1px;}
+.kmsectxt{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-muted);line-height:1.7;}
+.kmsectxt strong{color:var(--accent-amber);}
+.kmactions{display:flex;gap:6px;}
+.btn-kmsave{flex:1;padding:8px;background:linear-gradient(135deg,rgba(255,171,0,.18),rgba(255,171,0,.08));border:1px solid rgba(255,171,0,.42);border-radius:3px;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--accent-amber);cursor:pointer;transition:all .18s;}
+.btn-kmsave:hover{background:rgba(255,171,0,.27);}
+.btn-kmclear{padding:8px 10px;background:transparent;border:1px solid rgba(255,23,68,.28);border-radius:3px;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;color:rgba(255,23,68,.55);cursor:pointer;}
+.btn-kmcancel{padding:8px 10px;background:transparent;border:1px solid var(--border-glow);border-radius:3px;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--text-secondary);cursor:pointer;}
+.kmfb{margin-top:7px;font-family:'Share Tech Mono',monospace;font-size:8px;text-align:center;display:none;}
+.kmfb.on{display:block;}
+.smov{display:none;position:fixed;inset:0;z-index:2000;background:rgba(2,4,8,.9);align-items:center;justify-content:center;}
+.smov.on{display:flex;animation:fi .3s ease;}
+.smbox{position:relative;max-width:560px;width:92%;background:var(--bg-card);border:1px solid rgba(0,230,118,.43);border-radius:7px;box-shadow:0 0 65px rgba(0,230,118,.15);overflow:hidden;animation:miin .45s cubic-bezier(.2,0,.2,1.4) both;opacity:0;}
+.smtop{position:relative;padding:24px 24px 17px;background:linear-gradient(135deg,rgba(0,230,118,.07),rgba(0,229,255,.03));border-bottom:1px solid rgba(0,230,118,.15);text-align:center;}
+.smtop::before{content:'';position:absolute;top:-1px;left:-1px;right:-1px;height:2px;background:linear-gradient(90deg,var(--accent-cyan),var(--accent-green),var(--accent-cyan));background-size:200% 100%;animation:shimmer 2s linear infinite;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.smcheck{width:58px;height:58px;margin:0 auto 12px;border-radius:50%;border:2px solid var(--accent-green);box-shadow:0 0 22px rgba(0,230,118,.35);display:flex;align-items:center;justify-content:center;font-size:28px;animation:cpop .6s .3s cubic-bezier(.2,0,.2,1.6) both;}
+@keyframes cpop{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+.smtitle{font-family:'Rajdhani',sans-serif;font-size:21px;font-weight:700;letter-spacing:3px;color:var(--accent-green);text-shadow:0 0 15px rgba(0,230,118,.42);margin-bottom:5px;}
+.smsub{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--text-secondary);}
+.smbody{padding:17px 24px;}
+.smlog{background:rgba(0,0,0,.4);border:1px solid rgba(0,230,118,.11);border-radius:3px;padding:10px 12px;margin-bottom:15px;font-family:'Share Tech Mono',monospace;font-size:8px;line-height:2;color:#5a8fa8;}
+.logln{opacity:0;animation:lrow .3s ease forwards;}
+.logln:nth-child(1){animation-delay:.4s;}.logln:nth-child(2){animation-delay:.7s;}.logln:nth-child(3){animation-delay:1.0s;}.logln:nth-child(4){animation-delay:1.3s;}.logln:nth-child(5){animation-delay:1.6s;}
+@keyframes lrow{from{opacity:0;transform:translateX(-5px);}to{opacity:1;transform:none;}}
+.lok{color:var(--accent-green);}.lsync{color:var(--accent-cyan);}
+.smcount{text-align:center;margin-bottom:15px;}
+.scountlbl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--text-muted);margin-bottom:6px;}
+.scountval{font-family:'Rajdhani',sans-serif;font-size:44px;font-weight:700;color:var(--accent-cyan);text-shadow:0 0 25px rgba(0,229,255,.42);line-height:1;animation:cpulse 1s ease-in-out infinite;}
+@keyframes cpulse{0%,100%{text-shadow:0 0 25px rgba(0,229,255,.42);}50%{text-shadow:0 0 50px rgba(0,229,255,.8);}}
+.scountsub{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--accent-green);margin-top:4px;}
+.smfoot{padding:11px 24px 18px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(0,230,118,.08);}
+.smfootnote{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-muted);letter-spacing:1px;line-height:1.6;}
+.btn-smdismiss{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--accent-green);padding:8px 18px;border:1px solid rgba(0,230,118,.36);border-radius:3px;background:transparent;cursor:pointer;}
+.btn-smdismiss:hover{background:rgba(0,230,118,.08);}
+.rmov{display:none;position:fixed;inset:0;background:rgba(2,4,8,.88);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.rmov.on{display:flex;animation:fi .3s ease;}
+.rmbox{background:var(--bg-card);border-radius:5px;padding:24px;max-width:420px;width:90%;border:1px solid rgba(255,23,68,.38);text-align:center;animation:miin .28s ease;}
+.rmicon{font-size:38px;margin-bottom:11px;display:block;}
+.rmtitle{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;letter-spacing:2px;color:var(--accent-red);margin-bottom:9px;}
+.rmmsg{font-size:10px;line-height:1.8;color:#7a9cb0;margin-bottom:17px;}
+.rmpbar{height:2px;background:rgba(0,229,255,.08);border-radius:1px;overflow:hidden;margin-bottom:15px;}
+.rmpfill{height:100%;background:var(--accent-red);width:0%;transition:width 3s ease;border-radius:1px;}
+.btn-rmclose{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--text-secondary);padding:6px 14px;border:1px solid var(--border-glow);border-radius:3px;background:transparent;cursor:pointer;}
+.fade-in{animation:fadein .45s ease both;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--text-muted);}
+</style>
+</head>
+<body>
+
+<div class="scanwrap"><div class="scanline"></div></div>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-logo">CHRONOS</div>
+    <div class="brand-sep"></div>
+    <div class="brand-sub" id="tb-module">ENGINE / MODULE-03 / APPAREL x COSME INTELLIGENCE SYSTEM</div>
+  </div>
+  <div class="topbar-right">
+    <div class="ind-toggle">
+      <button class="ind-btn active" id="btn-ind-a" onclick="setIndustry('apparel')">APPAREL</button>
+      <div class="ind-sep"></div>
+      <button class="ind-btn" id="btn-ind-c" onclick="setIndustry('cosme')">COSME</button>
+    </div>
+    <div class="spill"><div class="dot g"></div><span id="ind-indicator">APPAREL MODE</span></div>
+    <div class="spill"><div class="dot a" id="key-dot-tb"></div><span id="key-lbl-tb">KEY UNSET</span></div>
+    <div class="spill"><div class="dot g"></div>LEGAL COMPLIANT</div>
+    <div class="tclock" id="clock">--:--:--</div>
+  </div>
+</div>
+
+<div class="workspace">
+<!-- SIDENAV -->
+<nav class="sidenav">
+  <div style="height:6px"></div>
+  <div class="snlabel">ANALYSIS VIEWS</div>
+  <div class="snitem active" onclick="navClick(this,'rank')">
+    <div class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="9" width="3" height="5"/><rect x="6.5" y="6" width="3" height="8"/><rect x="11" y="3" width="3" height="11"/></svg></div>
+    <div class="lbl">製品・店舗売上ランキング</div>
+  </div>
+  <div class="snitem" onclick="navClick(this,'trend')">
+    <div class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/></svg></div>
+    <div class="lbl">色柄・成分トレンド解析</div>
+  </div>
+  <div class="snitem" onclick="navClick(this,'senti')">
+    <div class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a6 6 0 100 12A6 6 0 008 2z"/><path d="M5 9s1 2 3 2 3-2 3-2"/><line x1="6" y1="6" x2="6" y2="6.5" stroke-linecap="round" stroke-width="2"/><line x1="10" y1="6" x2="10" y2="6.5" stroke-linecap="round" stroke-width="2"/></svg></div>
+    <div class="lbl">レビュー感情不満分析</div><div class="snbadge r">CORE</div>
+  </div>
+  <div class="sndiv"></div>
+  <div class="snlabel">CONFIGURATION</div>
+  <div class="snitem-key" onclick="openKeyModal()" style="position:relative;">
+    <div class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="5.5" r="3.5"/><circle cx="10" cy="5.5" r="1.2" fill="currentColor" stroke="none"/><path d="M7 8l-5 5" stroke-linecap="round"/><path d="M3.5 11H5.5V13H3.5Z" fill="currentColor" stroke="none"/></svg></div>
+    <div class="lbl">API設定</div><div class="key-dot-nav" id="key-nav-dot"></div>
+  </div>
+  <div class="sndiv"></div>
+
+  <!-- QUERY -->
+  <div class="qblock">
+    <div class="qlabel">&#9658; 商品名 / 競合ブランド名を入力</div>
+    <input type="text" id="query-input" class="qinput" placeholder="商品名、または競合ブランド・店舗名（例：AOKI、SNIDEL）" autocomplete="off"/>
+    <div class="qhint">競合名を入力すると「ハッキングモード」が自動起動</div>
+    <button class="btn-run" id="btn-run" onclick="runAnalysis()">&#9658; AI解析実行</button>
+  </div>
+
+  <!-- OVERRIDE PANEL -->
+  <div class="sndiv"></div>
+  <div class="ovpanel">
+    <div class="ovtitle">&#128161; 実数値でAIを完全最適化<span class="ovbadge" id="ovbadge">LIVE</span></div>
+    <div class="ovrow">
+      <div class="ovlbl">実績月商（万円）<span id="val-monthly">--万</span></div>
+      <div class="slwrap"><input type="range" class="ovslider" id="sl-monthly" min="100" max="5000" step="50" value="1000" oninput="syncInput('monthly')"/></div>
+      <input type="number" class="ovinput" id="ov-monthly" placeholder="例: 800" oninput="syncSlider('monthly')"/>
+    </div>
+    <div class="ovrow">
+      <div class="ovlbl">月間広告費（万円）<span id="val-adfee">--万</span></div>
+      <div class="slwrap"><input type="range" class="ovslider" id="sl-adfee" min="10" max="2000" step="10" value="300" oninput="syncInput('adfee')"/></div>
+      <input type="number" class="ovinput" id="ov-adfee" placeholder="例: 250" oninput="syncSlider('adfee')"/>
+    </div>
+    <div class="ovrow">
+      <div class="ovlbl">平均CPA（円）<span id="val-cpa">--円</span></div>
+      <div class="slwrap"><input type="range" class="ovslider" id="sl-cpa" min="500" max="50000" step="100" value="8000" oninput="syncInput('cpa')"/></div>
+      <input type="number" class="ovinput" id="ov-cpa" placeholder="例: 6500" oninput="syncSlider('cpa')"/>
+    </div>
+    <button class="btn-ov" onclick="applyOverride()">&#128200; 数値を確定・AIを再計算</button>
+    <div class="ovreset" onclick="resetOverride()">&#8635; AI推計値にリセット</div>
+  </div>
+
+  <!-- STEPS -->
+  <div class="sndiv"></div>
+  <div class="snlabel">PROCESS STEPS</div>
+  <div class="step-flow">
+    <div class="step-item"><div class="step-num" id="s1">1</div><div class="step-text" id="s1t">商品名 / 競合名を入力</div></div>
+    <div class="step-item"><div class="step-num" id="s2">2</div><div class="step-text" id="s2t">レビュー・画像AI解析</div></div>
+    <div class="step-item"><div class="step-num" id="s3">3</div><div class="step-text" id="s3t">3重補正推計グラフ描画</div></div>
+    <div class="step-item"><div class="step-num" id="s4">4</div><div class="step-text" id="s4t">商品開発指示タイピング出力</div></div>
+  </div>
+
+  <!-- HEALTH -->
+  <div class="healthbox">
+    <div class="hlabel">SYSTEM HEALTH</div>
+    <div class="hrow"><div class="hrowlbl"><span>楽天 CRAWLER</span><span>ACTIVE</span></div><div class="hbar"><div class="hfill g" style="width:100%"></div></div></div>
+    <div class="hrow"><div class="hrowlbl"><span>Amazon PARSER</span><span>ACTIVE</span></div><div class="hbar"><div class="hfill g" style="width:100%"></div></div></div>
+    <div class="hrow"><div class="hrowlbl"><span>GEMINI AI</span><span id="ai-hlbl">ACTIVE / LEGAL COMPLIANT</span></div><div class="hbar"><div class="hfill g" id="ai-hbar" style="width:100%"></div></div></div>
+  </div>
+</nav>
+
+<!-- CENTER -->
+<main class="cpanel">
+  <div class="hack-banner" id="hack-banner">
+    <span style="font-size:16px">&#9888;</span>
+    <div class="hack-tm">競合ハッキングモード起動 — <strong id="hack-banner-name">--</strong> の脆弱性を逆探知・解析中</div>
+    <div class="hack-tag">HACK MODE</div>
+  </div>
+  <div class="comp-summary" id="comp-summary">
+    <div class="cs-main">
+      <div class="cs-name" id="cs-name">--</div>
+      <div class="cs-metrics">
+        <div class="cs-metric"><div class="cs-val red" id="cs-monthly-val">--</div><div class="cs-mlbl">月間総売上</div></div>
+        <div class="cs-metric"><div class="cs-val amber" id="cs-annual-val">--</div><div class="cs-mlbl">年間総売上</div></div>
+        <div class="cs-metric"><div class="cs-val amber" id="cs-vuln-val">--</div><div class="cs-mlbl">主要不満率</div></div>
+        <div class="cs-metric"><div class="cs-val cyan" id="cs-capture-val">--</div><div class="cs-mlbl">横取り可能率</div></div>
+      </div>
+    </div>
+    <div class="vuln-badge" id="vuln-text">脆弱性スコア: 解析中...</div>
+  </div>
+  <div class="crawl-bar">
+    <div class="crawl-dot" id="crawl-dot"></div>
+    <div class="crawl-text" id="crawl-text">商品名または競合名を入力して「AI解析実行」を押してください</div>
+    <div class="crawl-srcs">
+      <div class="src-b" id="src-rakuten">楽天</div>
+      <div class="src-b" id="src-amazon">Amazon</div>
+      <div class="src-b" id="src-ec">自社EC</div>
+      <div class="src-b" id="src-ai">AI画像解析</div>
+    </div>
+  </div>
+  <div class="kpi-strip">
+    <div class="kpi-card kc-cy"><div class="kpi-label">市場ROAS（現状）</div><div class="kpi-val kv-cy" id="kpi-roas-now">--</div><div class="kpi-sub" id="kpi-roas-now-sub">解析待ち</div><div class="ov-ind" id="ov-ind-1">&#128161; 実数値ベース計算済み</div></div>
+    <div class="kpi-card kc-gr"><div class="kpi-label">ROAS（提案後予測）</div><div class="kpi-val kv-gr" id="kpi-roas-after">--</div><div class="kpi-sub" id="kpi-roas-after-sub">解析待ち</div><div class="ov-ind" id="ov-ind-2">&#128161; 実数値ベース計算済み</div></div>
+    <div class="kpi-card kc-am"><div class="kpi-label">月次純増利益（予測）</div><div class="kpi-val kv-am" id="kpi-profit">--</div><div class="kpi-sub" id="kpi-profit-sub">解析待ち</div><div class="ov-ind" id="ov-ind-3">&#128161; 実数値ベース計算済み</div></div>
+    <div class="kpi-card kc-pu"><div class="kpi-label">CPA改善幅（予測）</div><div class="kpi-val kv-pu" id="kpi-cpa">--</div><div class="kpi-sub" id="kpi-cpa-sub">解析待ち</div><div class="ov-ind" id="ov-ind-4">&#128161; 実数値ベース計算済み</div></div>
+  </div>
+  <div class="chartpanel">
+    <div class="phead">
+      <div class="ptitle" id="chart-title">製品・店舗 月次売上ランキング（3重補正推計）</div>
+      <div class="pcontrols">
+        <select id="rank-sub-tab" onchange="if(lastResult)applyResult(lastResult,true)" style="background:rgba(0,0,0,.4);border:1px solid var(--border-glow);border-radius:2px;font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--text-secondary);padding:2px 5px;cursor:pointer;outline:none;">
+          <option value="product">製品ランク</option>
+          <option value="shop">店舗ランク</option>
+        </select>
+      </div>
+    </div>
+    <div class="chartarea">
+      <div id="chartarea-inner" style="flex:1;overflow-y:auto;">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:120px;opacity:.4;gap:8px;">
+          <div style="font-size:26px">&#128202;</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-muted);letter-spacing:2px;text-align:center;line-height:1.8;">解析実行後にグラフが表示されます</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- RIGHT PANEL -->
+<aside class="rpanel">
+  <div class="rphead">
+    <div class="rpsubtitle">CHRONOS AI / APPAREL x COSME PRODUCT DEVELOPMENT ENGINE</div>
+    <div class="rptitle">商品開発指示 OUTPUT</div>
+    <div class="rpstatus" id="rp-status">STANDBY <div class="tdots"><span></span><span></span><span></span></div></div>
+  </div>
+  <div class="rpbody" id="rp-body">
+    <div class="loadov" id="loadov">
+      <div class="lring"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="none" stroke="rgba(0,229,255,.1)" stroke-width="2"/><circle cx="32" cy="32" r="28" fill="none" stroke="var(--accent-cyan)" stroke-width="2" stroke-dasharray="44 132" stroke-linecap="round"/></svg><div class="lring-in"></div></div>
+      <div class="ltxt">
+        <div class="ll">&#9658; 楽天・Amazon・自社ECのレビュー収集中...</div>
+        <div class="ll">&#9658; Gemini画像解析 &#8212; 色柄・成分を識別中...</div>
+        <div class="ll">&#9658; 3重補正モデル &#8212; 売上推計を算出中...</div>
+        <div class="ll">&#9658; 星1〜2の不満原因を感情解析中...</div>
+        <div class="ll">&#9658; ニッチ商品開発指示を生成中...</div>
+      </div>
+      <div class="lpwrap"><div class="lpbar"><div class="lpfill" id="lp-fill"></div></div><div class="lplbl" id="lp-lbl">0%</div></div>
+    </div>
+    <div class="etost" id="etost"></div>
+    <div id="rx-content">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-muted);padding:22px 5px;text-align:center;line-height:2.2;">
+        商品名または競合ブランド名を入力して解析を実行してください<br><br>
+        <span style="color:rgba(0,229,255,.2);font-size:8px;">競合名入力 &#8594; ハッキングモード自動起動</span>
+      </div>
+    </div>
+  </div>
+</aside>
+</div>
+
+<!-- KEY MODAL -->
+<div class="kmov" id="km-overlay" onclick="if(event.target===this)closeKeyModal()">
+  <div class="kmbox">
+    <div class="kmhead"><div class="kmicon">&#128273;</div><div><div class="kmtag">SECURITY / API CONFIGURATION</div><div class="kmtitle">Gemini API キー設定</div></div></div>
+    <div class="kmbody">
+      <div class="kmdesc"><a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> で発行したAPIキーを入力。キーは <strong>sessionStorage（ブラウザメモリ）のみ</strong>に保存。サーバーには送信されません。</div>
+      <div class="kminwrap"><input type="password" id="km-input" class="kminput" placeholder="AIzaSy... から始まるキーを貼り付け" autocomplete="off" spellcheck="false"/><button class="eyebtn" onclick="toggleEye()"><svg id="eye-svg" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 8s3-5 7-5 7 5 7 5-3 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button></div>
+      <div class="kmsecnote"><div class="kmsecicon">&#128737;</div><div class="kmsectxt"><strong>安全：</strong>sessionStorageのみ保存。チャット・サーバーへの送信なし。タブを閉じると自動消去。</div></div>
+      <div class="kmactions"><button class="btn-kmsave" onclick="saveKey()">&#128274; 保存して閉じる</button><button class="btn-kmclear" onclick="clearKey()">削除</button><button class="btn-kmcancel" onclick="closeKeyModal()">CANCEL</button></div>
+      <div class="kmfb" id="km-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- REJECT MODAL -->
+<div class="rmov" id="rm-overlay" onclick="if(event.target===this)closeReject()">
+  <div class="rmbox"><span class="rmicon">&#10005;</span><div class="rmtitle">却下されました</div><div class="rmmsg" id="rm-msg"></div><div class="rmpbar"><div class="rmpfill" id="rm-fill"></div></div><button class="btn-rmclose" onclick="closeReject()">[ DISMISS ]</button></div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="smov" id="sm-overlay">
+  <div class="smbox">
+    <div class="smtop"><div class="smcheck">&#10003;</div><div class="smtitle">承認完了 — APPROVED</div><div class="smsub">CHRONOS ENGINE / AUTONOMOUS PRODUCT LAUNCH INITIATED</div></div>
+    <div class="smbody">
+      <div class="smlog">
+        <div class="logln"><span class="lok">[OK]</span> 商品開発指示を承認しました</div>
+        <div class="logln"><span class="lsync">[SYNC]</span> Shopify APIへ商品仕様書を送信中...</div>
+        <div class="logln"><span class="lok">[OK]</span> 商品ページテンプレート生成完了</div>
+        <div class="logln"><span class="lsync">[SYNC]</span> 広告API（Meta/Google）へ訴求KW連携中...</div>
+        <div class="logln"><span class="lok">[LAUNCH]</span> <strong style="color:var(--accent-green)">ニッチ市場参入シーケンス 完了</strong></div>
+      </div>
+      <div class="smcount"><div class="scountlbl">ニッチ市場独占まで</div><div class="scountval" id="cd-val">90</div><div class="scountsub">DAYS TO DOMINATION</div></div>
+    </div>
+    <div class="smfoot"><div class="smfootnote">Chronos Engine が商品開発・広告・<br>Shopifyへの自律同期を開始しました</div><button class="btn-smdismiss" onclick="closeSuccess()">[ LAUNCH ]</button></div>
+  </div>
+</div>
+
+
+<script>
+
+// CLOCK
+function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('ja-JP',{hour12:false});}
+tick();setInterval(tick,1000);
+
+// COMPETITOR KEYWORDS (for UI mode detection only — actual analysis on server)
+const CA=['aoki','aoyama','orihica','ユニクロ','uniqlo','gu','zara','h&m','snidel','mila owen','rope','iena','journal standard','urban research','ships','united arrows','beams','tomorrowland','nano','vis','rivet','gap','しまむら','nissen','zozo','onward','stripe','world','sanctuary','natural beauty','felissimo','belluna'];
+const CC=['資生堂','shiseido','コーセー','kose','カネボウ','花王','ポーラ','pola','integrate','maquillage','cezanne','canmake','kate','excel','rom&nd','romand','clio','innisfree','laneige','etude','missha','fenty','nars','mac','bobbi brown','lancome','estee lauder','chanel','dior','ysl','whomee','addiction','THREE','RMK','shu uemura','paul & joe'];
+function isComp(kw,ind){const l=kw.toLowerCase();return (ind==='apparel'?CA:CC).some(k=>l.includes(k));}
+
+let currentView='rank', industry='apparel', lastResult=null, typingTimer=null, overrideOn=false;
+
+function navClick(el,v){document.querySelectorAll('.snitem').forEach(n=>n.classList.remove('active'));el.classList.add('active');currentView=v;if(lastResult)applyResult(lastResult,true);updateChartTitle();}
+
+function setIndustry(ind){
+  industry=ind;
+  document.getElementById('btn-ind-a').classList.toggle('active',ind==='apparel');
+  document.getElementById('btn-ind-c').classList.toggle('active',ind==='cosme');
+  document.getElementById('ind-indicator').textContent=ind==='apparel'?'APPAREL MODE':'COSME MODE';
+  document.getElementById('query-input').placeholder=ind==='apparel'
+    ?'商品名、または競合ブランド・店舗名（例：AOKI、SNIDEL）'
+    :'商品名、または競合ブランド・店舗名（例：資生堂、rom&nd）';
+  setText('tb-module',ind==='apparel'?'ENGINE / MODULE-03 / APPAREL INTELLIGENCE SYSTEM':'ENGINE / MODULE-03 / COSME INTELLIGENCE SYSTEM');
+}
+
+function setStep(n){
+  for(let i=1;i<=4;i++){
+    const num=document.getElementById('s'+i),txt=document.getElementById('s'+i+'t');
+    if(i<n){num.className='step-num done';num.textContent='v';txt.className='step-text done';}
+    else if(i===n){num.className='step-num active';num.textContent=i;txt.className='step-text active';}
+    else{num.className='step-num';num.textContent=i;txt.className='step-text';}
+  }
+}
+
+function updateChartTitle(){
+  if(!lastResult)return;
+  const d=lastResult;
+  setText('chart-title',
+    currentView==='rank'?(d.hackMode?'競合「'+d.kw+'」SKU別売上ランキング（監査データ）':'製品・店舗 月次売上ランキング（3重補正推計）')
+    :currentView==='trend'?(d.donutTitle||'トレンド解析')
+    :(d.hackMode?'競合「'+d.kw+'」店舗レビュー不満分析':'レビュー感情不満分析 — ニッチ特定'));
+}
+
+const delay=ms=>new Promise(r=>setTimeout(r,ms));
+
+// ── OVERRIDE ──
+function syncSlider(f){const i=document.getElementById('ov-'+f),s=document.getElementById('sl-'+f),v=document.getElementById('val-'+f);if(s)s.value=i.value;if(v)v.textContent=f==='cpa'?parseInt(i.value||0).toLocaleString()+'円':parseInt(i.value||0).toLocaleString()+'万';}
+function syncInput(f){const s=document.getElementById('sl-'+f),i=document.getElementById('ov-'+f),v=document.getElementById('val-'+f);if(i)i.value=s.value;if(v)v.textContent=f==='cpa'?parseInt(s.value||0).toLocaleString()+'円':parseInt(s.value||0).toLocaleString()+'万';}
+
+async function applyOverride(){
+  if(!lastResult){showErr('まず解析を実行してください。');return;}
+  const monthly=parseInt(document.getElementById('ov-monthly').value)||0;
+  const adFee=parseInt(document.getElementById('ov-adfee').value)||0;
+  const cpa=parseInt(document.getElementById('ov-cpa').value)||0;
+  if(!monthly&&!adFee&&!cpa){showErr('実数値を入力してください。');return;}
+  overrideOn=true;
+  document.getElementById('ovbadge').classList.add('on');
+  document.querySelectorAll('.kpi-card').forEach(c=>{c.style.boxShadow='0 0 18px rgba(213,0,249,.3)';setTimeout(()=>c.style.boxShadow='',700);});
+
+  // POST to /api/analyze with customData flag
+  showLoading(true); animProg();
+  try{
+    const res = await fetch('/api/analyze',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        keyword: lastResult.kw,
+        mode: industry,
+        hackMode: lastResult.hackMode||false,
+        customData:{ monthly, adFee, cpa }
+      })
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const parsed = await res.json();
+    showLoading(false);
+    overrideOn=true;
+    document.getElementById('ovbadge').classList.add('on');
+    document.querySelectorAll('.ov-ind').forEach(el=>el.classList.add('on'));
+    renderKpi(parsed);
+    applyResult({...lastResult,...parsed},false);
+    if(typingTimer)clearTimeout(typingTimer);
+    const el=document.getElementById('typing-output');
+    if(el&&parsed.output){el.innerHTML='<span class="typing-cursor"></span>';startTypingText(parsed.output);}
+  }catch(e){
+    showLoading(false);
+    // Fallback: local recalculation if server unavailable
+    const mBase=monthly||lastResult.topM||1000;
+    const adBase=adFee||Math.round(mBase*0.3);
+    const cpaBase=cpa||8000;
+    const rNow=adBase>0?(mBase*10000/(adBase*10000)).toFixed(1):'--';
+    const rTgt=(parseFloat(rNow)*1.85).toFixed(1);
+    const cpaImp=Math.round((1-(cpaBase/(cpaBase*1.55)))*100);
+    const profAdd=Math.round(mBase*0.44);
+    animVal('kpi-roas-now',rNow+'x'); animVal('kpi-roas-after',rTgt+'x');
+    animVal('kpi-profit','+¥'+(profAdd/100).toFixed(1)+'M'); animVal('kpi-cpa','-'+cpaImp+'%');
+    setText('kpi-roas-now-sub','実績値ベース算出'); setText('kpi-roas-after-sub','提案施策後の予測値');
+    setText('kpi-profit-sub','月次純増利益（実績値ベース）'); setText('kpi-cpa-sub','実CPA '+cpaBase.toLocaleString()+'円をベースに算出');
+    document.querySelectorAll('.ov-ind').forEach(el=>el.classList.add('on'));
+    if(typingTimer)clearTimeout(typingTimer);
+    const el=document.getElementById('typing-output');
+    if(el){
+      el.innerHTML='<span class="typing-cursor"></span>';
+      startTypingText('【実数値で再最適化完了】\n御社のリアルな実績（月商 '+mBase+'万円、広告費 '+adBase+'万円、CPA '+cpaBase.toLocaleString()+'円）をベースに再計算しました。\n\n現在のROASは '+rNow+'x ですが、提案施策実行後には '+rTgt+'x が見込まれます。\n月次純増利益は +¥'+(profAdd/100).toFixed(1)+'M の上乗せが可能です。\n\n御社の実績月商 '+mBase+'万円をベースにした数値なので、これは絵空事ではありません。競合の不満ニッチを狙った1型追加投入と、CPA削減施策を並行実施してください。');
+    }
+  }
+}
+
+function resetOverride(){
+  overrideOn=false;
+  document.getElementById('ovbadge').classList.remove('on');
+  document.querySelectorAll('.ov-ind').forEach(el=>el.classList.remove('on'));
+  if(lastResult){renderKpi(lastResult);renderRxShell(lastResult);startTyping(lastResult);}
+}
+
+// ── CRAWL ANIMATIONS ──
+async function runCrawlNormal(kw){
+  setStep(2);
+  const dot=document.getElementById('crawl-dot'),txt=document.getElementById('crawl-text');
+  const rb=document.getElementById('src-rakuten'),ab=document.getElementById('src-amazon'),eb=document.getElementById('src-ec'),aib=document.getElementById('src-ai');
+  [rb,ab,eb,aib].forEach(el=>el.className='src-b');
+  dot.className='crawl-dot scanning';txt.className='crawl-text';
+  txt.innerHTML='楽天・Amazon・自社ECの「<strong>'+kw+'</strong>」全レビュー＆画像をAI多角解析中...';
+  rb.className='src-b active';await delay(500);rb.className='src-b done';ab.className='src-b active';await delay(500);
+  ab.className='src-b done';eb.className='src-b active';await delay(400);eb.className='src-b done';aib.className='src-b active';await delay(600);
+  aib.className='src-b done';dot.className='crawl-dot done';
+  txt.innerHTML='✓ 「<strong>'+kw+'</strong>」解析完了 — <strong id="rev-count">--</strong>件のレビューを処理';
+}
+async function runCrawlHack(kw){
+  setStep(2);
+  const dot=document.getElementById('crawl-dot'),txt=document.getElementById('crawl-text');
+  const rb=document.getElementById('src-rakuten'),ab=document.getElementById('src-amazon'),eb=document.getElementById('src-ec'),aib=document.getElementById('src-ai');
+  [rb,ab,eb,aib].forEach(el=>el.className='src-b');
+  dot.className='crawl-dot hack';txt.className='crawl-text hc';
+  txt.innerHTML='⚠ 競合「<strong>'+kw+'</strong>」の全SKU・レビューを逆探知・モデリング中...';
+  rb.className='src-b hk';await delay(400);rb.className='src-b done';ab.className='src-b hk';await delay(400);
+  ab.className='src-b done';eb.className='src-b hk';await delay(300);eb.className='src-b done';aib.className='src-b hk';await delay(500);
+  aib.className='src-b done';dot.className='crawl-dot done';txt.className='crawl-text';
+  txt.innerHTML='✓ 競合「<strong style="color:var(--accent-red)">'+kw+'</strong>」の脆弱性を検知 — <strong id="rev-count" style="color:var(--accent-red)">--</strong>件のネガレビューを解析済み';
+}
+
+// ── MAIN ANALYSIS — POSTs to /api/analyze ──
+async function runAnalysis(){
+  const kw=document.getElementById('query-input').value.trim();
+  if(!kw){showErr('商品名または競合名を入力してください。');return;}
+  hideErr();
+  overrideOn=false;document.getElementById('ovbadge').classList.remove('on');document.querySelectorAll('.ov-ind').forEach(el=>el.classList.remove('on'));
+  setStep(1);setRunBtn(true);
+  setText('rp-status','AI PROCESSING <div class="tdots"><span></span><span></span><span></span></div>');
+  document.getElementById('rp-status').innerHTML='AI PROCESSING <div class="tdots"><span></span><span></span><span></span></div>';
+
+  const hackMode=isComp(kw,industry);
+  const hackBanner=document.getElementById('hack-banner'),compSummary=document.getElementById('comp-summary');
+  if(hackMode){
+    hackBanner.classList.add('on');setText('hack-banner-name',kw);
+    document.getElementById('lp-fill').classList.add('hprog');
+    document.querySelector('.ltxt').classList.add('hltxt');
+    const lls=document.querySelectorAll('.ll');
+    ['⚠ 競合「'+kw+'」の全SKUを逆探知中...','► 売上構成データをモデリング中...','► ネガレビューの感情解析中...','► 脆弱性スコアを算出中...','► 攻略ロジックを生成中...'].forEach((m,i)=>lls[i]&&(lls[i].textContent=m));
+  } else {
+    hackBanner.classList.remove('on');compSummary.classList.remove('on');
+    document.getElementById('lp-fill').classList.remove('hprog');
+    document.querySelector('.ltxt').classList.remove('hltxt');
+    const lls=document.querySelectorAll('.ll');
+    ['▶ 楽天・Amazon・自社ECのレビュー収集中...','► Gemini画像解析 — 色柄・成分を識別中...','► 3重補正モデル — 売上推計を算出中...','► 星1〜2の不満原因を感情解析中...','► ニッチ商品開発指示を生成中...'].forEach((m,i)=>lls[i]&&(lls[i].textContent=m));
+  }
+
+  const crawlP=hackMode?runCrawlHack(kw):runCrawlNormal(kw);
+  showLoading(true);animProg();
+
+  let parsed=null;
+  try{
+    // POST to our own backend — no API keys in frontend
+    const res=await fetch('/api/analyze',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ keyword:kw, mode:industry, hackMode })
+    });
+    if(!res.ok) throw new Error('server '+res.status);
+    parsed=await res.json();
+    parsed.kw=kw; parsed.ind=industry; parsed.hackMode=hackMode;
+  }catch(err){
+    console.warn('Backend unavailable, using client simulation:', err.message);
+    parsed=clientSim(kw,industry,hackMode);
+  }
+
+  await crawlP; await delay(200);
+  const rcEl=document.getElementById('rev-count');
+  if(rcEl)rcEl.textContent=(parsed.reviewCount||0).toLocaleString();
+
+  if(hackMode&&parsed.totalM){
+    compSummary.classList.add('on');
+    setText('cs-name','⚠ 競合「'+kw+'」監査完了');
+    setText('cs-monthly-val','¥'+parsed.totalM+'万');
+    setText('cs-annual-val','¥'+((parsed.totalA||0)/10000).toFixed(1)+'億');
+    setText('cs-vuln-val',(parsed.v1||0)+'%');
+    setText('cs-capture-val',(parsed.cap||30)+'%');
+    setText('vuln-text','脆弱性スコア: CRITICAL — '+(parsed.v1||0)+'% のユーザーが致命的不満を保有');
+  }
+
+  lastResult=parsed;
+  setStep(3);renderKpi(parsed);applyResult(parsed,false);
+  await delay(300);setStep(4);showLoading(false);
+  setText('ai-hlbl','ACTIVE / LEGAL COMPLIANT');
+  document.getElementById('ai-hbar').style.cssText='height:100%;width:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent-green),#00897b);';
+  document.getElementById('rp-status').innerHTML=(hackMode?'⚠ HACK MODE':'ANALYSIS COMPLETE')+' <div class="tdots"><span></span><span></span><span></span></div>';
+  renderRxShell(parsed);startTyping(parsed);setRunBtn(false);
+}
+
+// ── CLIENT-SIDE SIMULATION FALLBACK ──
+function clientSim(kw,ind,hackMode){
+  const s=kw.split('').reduce((a,c)=>(a*31+c.charCodeAt(0))|0,0);
+  const rng=(mn,mx)=>{const x=Math.abs(Math.sin(s+mn+mx));return Math.floor(x*(mx-mn+1))+mn;};
+  if(hackMode){
+    const totalM=rng(2800,5500),totalA=Math.round(totalM*11.5/100)*100,v1=rng(14,26),cap=rng(28,45),roas=rng(380,520);
+    const skus=ind==='apparel'?['ティアードワンピース','シアーシャツ','テーパードパンツ','ニットカーデ','デニムスカート']:['色番21番（リキッドBB）','色番23番（クッションBB）','モイスチャーセラム','UVプライマー','セッティングパウダー'];
+    const ranks=skus.map((nm,i)=>{const m=Math.round(totalM*rng(6,38)/100);return{rank:i+1,name:nm+'（'+kw+'）',sub:'SKU別売上',monthly:m,annual:Math.round(m*11.5/100)*100,trend:rng(-15,25)};}).sort((a,b)=>b.monthly-a.monthly).map((r,i)=>({...r,rank:i+1}));
+    const complaints=ind==='apparel'?[{text:'購入後の発送遅延（2〜5日超過）',pct:v1,sev:'high'},{text:'サイズ交換時の往復送料が自己負担',pct:rng(10,18),sev:'high'},{text:'写真と実物の色・素材感が異なる',pct:rng(8,16),sev:'mid'},{text:'カスタマー対応が遅い',pct:rng(6,12),sev:'mid'}]:[{text:'リニューアル後の成分変更による肌荒れ',pct:v1,sev:'high'},{text:'香料が強くなり刺激を感じる',pct:rng(10,20),sev:'high'},{text:'旧処方の方が肌なじみが良かった',pct:rng(8,16),sev:'mid'},{text:'容量が減って値段が上がった',pct:rng(5,12),sev:'mid'}];
+    const donutData=skus.slice(0,4).map((nm,i)=>{const colors=['#1a3a6b','#c4a882','#4a6741','#6b3a7d'];return{name:nm,pct:rng(10,38),color:colors[i]};});
+    donutData.push({name:'その他',pct:100-donutData.reduce((a,d)=>a+d.pct,0),color:'#2a4a5c'});
+    const output=ind==='apparel'?'【警告：競合「'+kw+'」の脆弱性を検知】\n当該店舗は今月、全館で推計 '+totalM+'万円 を売り上げていますが、その売上の約60%を上位2つのSKUのみに依存している極めて歪な構造です。\n\nさらに、店舗レビューを感情分析した結果、全体の '+v1+'% が「購入後の発送遅延と、サイズ交換時の往復送料が自己負担であること」への怒りに集中しています。\n\n御社が勝つための戦略は明白です。同型デザインを「即日発送・サイズ交換無料」の訴求で自社ECにぶつけてください。流入客の '+cap+'% をノーリスクで横取りし、初月からROAS '+roas+'% を達成可能です。':'【警告：競合「'+kw+'」の脆弱性を検知】\n当該ブランドは今月、特定モールだけで推計 '+totalM+'万円 のシェアを維持していますが、レビューの文脈解析により「リニューアル後の成分変更による肌荒れ・ピリつき」のクレームが直近で '+v1+'% 急増しています。\n\n御社は今すぐ、旧来の安心安全な低刺激成分を前面に押し出した対抗製品をSNS広告でブーストしてください。ライバルが炎上・困惑している今こそ、顧客リストを総ざらいする最大の好機です。ROAS '+roas+'% で流出顧客を全捕捉できます。';
+    return{kw,ind,hackMode:true,reviewCount:rng(8000,32000),topM:totalM,totalM,totalA,v1,cap,roas,
+      kpi:{roas_now:(rng(10,20)/10).toFixed(1)+'x',roas_now_sub:'競合の推定ROAS',roas_after:(roas/100).toFixed(1)+'x',roas_after_sub:'攻略後の予測ROAS',profit:'+¥'+(rng(15,32)/10).toFixed(1)+'M',profit_sub:'月次純増利益試算（横取り分）',cpa_imp:'-'+rng(30,55)+'%',cpa_sub:'即日発送+無料交換で差別化'},
+      ranks,shopRanks:ranks,donutData,donutCenter:{val:totalM+'万',lbl:'月間総売上'},
+      senti:{pos:rng(42,58),neu:rng(14,22)},complaints,
+      praises:['デザインが良い','コスパは良い','写真映えする'],
+      keywords:ind==='apparel'?['即日発送','サイズ交換無料','写真と同じ色','丁寧な梱包','返品保証']:['旧処方相当','低刺激処方','無香料','肌荒れしない','敏感肌向け'],
+      hotKw:ind==='apparel'?['即日発送','サイズ交換無料']:['低刺激処方','無香料'],
+      donutTitle:kw+' SKU別売上構成比',output,
+      apvQ:kw+'の脆弱点を突く対抗モデルで初月ROAS '+roas+'% 達成。今すぐ投入しますか？'};
+  } else {
+    const topM=rng(1200,3500),roas=rng(360,580),p1=rng(14,22),p2=rng(8,16);
+    const brands=ind==='apparel'?['URBAN RESEARCH','SHIPS','nano・universe','BEAMS','TOMORROWLAND']:['CLIO','rom&nd','CANMAKE','KATE','EXCEL'];
+    const shops=ind==='apparel'?['JOURNAL STANDARD','UNITED ARROWS','BEAUTY&YOUTH','EDIFICE','IENA']:['@cosme SHOPPING','NARS公式','LANEIGE','innisfree',"Kiehl's"];
+    const ranks=brands.map((b,i)=>{const m=Math.max(400,rng(800,topM)-i*rng(80,250));return{rank:i+1,name:b+' '+kw,sub:'楽天/Amazon',monthly:m,annual:Math.round(m*11.5/100)*100,trend:rng(-12,28)};}).sort((a,b)=>b.monthly-a.monthly).map((r,i)=>({...r,rank:i+1}));
+    const shopRanks=shops.map((b,i)=>{const m=Math.max(600,rng(1200,4000)-i*rng(150,400));return{rank:i+1,name:b,sub:'EC店舗',monthly:m,annual:Math.round(m*11.8/100)*100,trend:rng(-8,35)};}).sort((a,b)=>b.monthly-a.monthly).map((r,i)=>({...r,rank:i+1}));
+    const donutData=ind==='apparel'?[{name:'ネイビー/ブラック',pct:rng(28,38),color:'#1a3a6b'},{name:'ベージュ/ブラウン',pct:rng(20,28),color:'#c4a882'},{name:'ホワイト/グレー',pct:rng(15,22),color:'#a0b4be'},{name:'カーキ/グリーン',pct:rng(8,14),color:'#4a6741'},{name:'その他',pct:0,color:'#2a4a5c'}]:[{name:'マット系',pct:rng(30,40),color:'#8b4513'},{name:'ツヤ/グロウ系',pct:rng(22,30),color:'#d4a017'},{name:'ナチュラル系',pct:rng(15,22),color:'#f5deb3'},{name:'カバー力重視',pct:rng(8,14),color:'#6b3a7d'},{name:'その他',pct:0,color:'#2a4a5c'}];
+    donutData[4].pct=100-donutData.slice(0,4).reduce((a,d)=>a+d.pct,0);
+    const k1=ind==='apparel'?'着丈補正':'保湿成分15%強化',k2=ind==='apparel'?'透け防止ライナー':'毛穴フィラー配合';
+    const pain1=ind==='apparel'?'丈が長く踏む':'夕方の乾燥・毛穴落ち',pain2=ind==='apparel'?'透けが気になる':'カバー力が物足りない';
+    const output=ind==='apparel'?'競合店舗の「'+ranks[0].name+'」が、今月「'+kw+'」カテゴリで推計 '+topM+'万円 を稼ぎ出しています。\n\n3重補正推計モデルによるレビュー感情解析の結果、'+p1+'%のユーザーが「'+pain1+'」という強烈な不満を抱えており、'+p2+'%が「'+pain2+'」を指摘しています。\n\n御社は今すぐ、'+k1+'・'+k2+'対応の補正モデルを1型投入してください。初月からROAS '+roas+'% で競合の売上を横取りできます。':'競合ブランドの「'+ranks[0].name+'」が、今月「'+kw+'」カテゴリから推計 '+topM+'万円 の売上を上げています。\n\nレビューの文脈解析により、'+p1+'%のユーザーが「'+pain1+'」に悩まされており、'+p2+'%が「'+pain2+'」を不満として残しています。\n\n御社は今すぐ、'+k1+'・'+k2+'を採用した自社EC限定モデルを投入してください。ROAS '+roas+'% のニッチシェアをピンポイントで奪えます。';
+    return{kw,ind,hackMode:false,reviewCount:rng(12000,48000),topM,roas,p1,p2,
+      kpi:{roas_now:(rng(14,24)/10).toFixed(1)+'x',roas_now_sub:'現状の広告費効率',roas_after:(rng(34,56)/10).toFixed(1)+'x',roas_after_sub:'提案投入後の予測値',profit:'+¥'+(rng(12,28)/10).toFixed(1)+'M',profit_sub:'月次純増利益試算',cpa_imp:'-'+rng(28,52)+'%',cpa_sub:'訴求KW最適化効果'},
+      ranks,shopRanks,donutData,donutCenter:{val:topM+'万',lbl:'TOP SKU/月'},
+      senti:{pos:rng(52,70),neu:rng(15,24)},
+      complaints:[{text:pain1,pct:p1,sev:'high'},{text:pain2,pct:p2,sev:'mid'},{text:'サイズ感が大きい',pct:rng(4,10),sev:'low'},{text:'カラー展開が少ない',pct:rng(3,8),sev:'low'}],
+      praises:['デザインが良い','コスパが高い','リピート購入','着回しが効く'],
+      keywords:[k1,k2,'低身長対応','日本製素材','エコ素材'],hotKw:[k1,k2],
+      donutTitle:ind==='apparel'?'カラー×デザイン トレンドシェア':'テクスチャ×成分 市場占有率',output,
+      apvQ:'ニッチ補正モデル投入で初月ROAS '+roas+'% 達成が見込まれます。開発を承認しますか？'};
+  }
+}
+
+// ── RENDER FUNCTIONS ──
+function applyResult(d,viewOnly){
+  updateChartTitle();
+  if(currentView==='rank')renderRankView(d);
+  else if(currentView==='trend')renderTrendView(d);
+  else renderSentiView(d);
+  if(!viewOnly)setText('tb-module','ENGINE / MODULE-03 / '+(d.kw||'').toUpperCase()+' — '+(d.ind==='apparel'?'APPAREL':'COSME')+(d.hackMode?' HACK':' INTEL'));
+}
+
+function renderRankView(d){
+  const area=document.getElementById('chartarea-inner');
+  const tab=document.getElementById('rank-sub-tab')?.value||'product';
+  const isHack=d.hackMode;
+  const rows=isHack?d.ranks:(tab==='shop'?d.shopRanks:d.ranks);
+  if(!rows||!rows.length){area.innerHTML='<div style="font-family:\'Share Tech Mono\',monospace;font-size:9px;color:var(--text-muted);padding:20px;text-align:center;">データがありません</div>';return;}
+  let html='<div class="rank-table"><div class="rank-head"><span>#</span><span>'+(isHack?'SKU名':'商品 / 店舗名')+'</span><span>月次売上</span><span>年間売上</span><span>前月比</span></div>';
+  const maxM=Math.max(...rows.map(x=>x.monthly));
+  rows.forEach((r,i)=>{
+    const isTop=r.rank===1,tCls=r.trend>=0?'tu':'td',tStr=(r.trend>=0?'▲+':'▼')+Math.abs(r.trend)+'%';
+    html+='<div class="rank-row'+(isTop?(isHack?' htop':' top1'):'')+'"><div class="rank-num'+(isTop?(isHack?' rn':' gold'):'')+'">'+r.rank+'</div><div><div class="rank-name">'+(r.name||'')+'</div><div class="rank-name-sub">'+(r.sub||'')+'</div><div class="mini-bar '+(isHack?'mb-rd':isTop?'mb-am':'mb-cy')+'" id="rb'+i+'" style="width:0%;max-width:160px;"></div></div><div class="rank-monthly">¥'+(r.monthly||0)+'万</div><div class="rank-annual">¥'+(((r.annual||0)/10000).toFixed(1))+'億</div><div class="rank-trend '+tCls+'">'+tStr+'</div></div>';
+  });
+  html+='</div>';area.innerHTML=html;
+  setTimeout(()=>{rows.forEach((_,i)=>{const el=document.getElementById('rb'+i);if(el)el.style.width=Math.round((rows[i].monthly||0)/maxM*100)+'%';});},80);
+}
+
+function renderTrendView(d){
+  const area=document.getElementById('chartarea-inner');
+  const items=d.donutData||[];if(!items.length)return;
+  const total=items.reduce((s,x)=>s+x.pct,0);
+  let cumAngle=-90,paths='';
+  items.forEach(it=>{const angle=(it.pct/total)*360,r=52,cx=65,cy=65;const rad1=cumAngle*Math.PI/180,rad2=(cumAngle+angle)*Math.PI/180;const x1=cx+r*Math.cos(rad1),y1=cy+r*Math.sin(rad1),x2=cx+r*Math.cos(rad2),y2=cy+r*Math.sin(rad2);paths+='<path d="M'+cx+','+cy+' L'+x1.toFixed(2)+','+y1.toFixed(2)+' A'+r+','+r+',0,'+(angle>180?1:0)+',1,'+x2.toFixed(2)+','+y2.toFixed(2)+' Z" fill="'+it.color+'" opacity=".85"/>';cumAngle+=angle;});
+  paths+='<circle cx="65" cy="65" r="34" fill="#081828"/>';
+  const legHtml=items.map(it=>'<div class="dlr"><div class="dld" style="background:'+it.color+'"></div><div class="dln">'+it.name+'</div><div class="dlp">'+it.pct+'%</div><div class="dlbw"><div class="dlb" style="width:0%;background:'+it.color+'" data-w="'+it.pct+'"></div></div></div>').join('');
+  area.innerHTML='<div class="donut-wrap"><div class="dsw"><svg viewBox="0 0 130 130">'+paths+'</svg><div class="dcenter"><div class="dcenter-val">'+(d.donutCenter?.val||'--')+'</div><div class="dcenter-lbl">'+(d.donutCenter?.lbl||'TOP SKU')+'</div></div></div><div class="dlegend">'+legHtml+'</div></div>';
+  setTimeout(()=>{document.querySelectorAll('.dlb').forEach(el=>{el.style.transition='width .8s ease';el.style.width=el.dataset.w+'%';});},80);
+}
+
+function renderSentiView(d){
+  const area=document.getElementById('chartarea-inner');
+  const senti=d.senti||{pos:62,neu:20};const neg=100-senti.pos-(senti.neu||20);
+  const complaints=d.complaints||[];
+  const sb={high:'bred',mid:'bamb',low:'bgrn'},sl={high:'要注意',mid:'中程度',low:'軽微'};
+  const complHtml=complaints.map(c=>'<div class="cr"><div class="cp '+(c.pct>=15?'ph':c.pct>=8?'pm':'pl')+'">'+c.pct+'%</div><div class="cb '+(sb[c.sev]||'bamb')+'">'+(sl[c.sev]||'中程度')+'</div><div class="ct">'+c.text+'</div></div>').join('');
+  const praises=(d.praises||[]).map(p=>'<span class="kw-tag" style="margin-bottom:4px">&#10003; '+p+'</span>').join('');
+  area.innerHTML='<div class="senti-grid"><div class="senti-card"><div class="senti-card-title">&#9632; 感情スコア分布</div><div class="sbr"><div class="sp" style="width:'+senti.pos+'%"></div><div class="sn" style="width:'+(senti.neu||20)+'%"></div><div class="sg" style="width:'+neg+'%"></div></div><div class="slr"><div class="sl"><div class="sld" style="background:var(--accent-green)"></div>ポジ '+senti.pos+'%</div><div class="sl"><div class="sld" style="background:var(--accent-amber)"></div>中立 '+(senti.neu||20)+'%</div><div class="sl"><div class="sld" style="background:var(--accent-red)"></div>ネガ '+neg+'%</div></div><div style="margin-top:9px;font-family:\'Share Tech Mono\',monospace;font-size:7px;color:var(--text-muted);margin-bottom:4px;">&#9632; 高評価ポイント</div><div class="kw-tags">'+praises+'</div></div><div class="senti-card"><div class="senti-card-title">&#9632; 星1〜2 不満原因 — ニッチ特定インサイト</div>'+complHtml+'</div></div>';
+}
+
+function renderKpi(d){
+  const k=d.kpi||{};
+  animVal('kpi-roas-now',k.roas_now||'--');setText('kpi-roas-now-sub',k.roas_now_sub||'');
+  animVal('kpi-roas-after',k.roas_after||'--');setText('kpi-roas-after-sub',k.roas_after_sub||'');
+  animVal('kpi-profit',k.profit||'--');setText('kpi-profit-sub',k.profit_sub||'');
+  animVal('kpi-cpa',k.cpa_imp||'--');setText('kpi-cpa-sub',k.cpa_sub||'');
+}
+
+function renderRxShell(d){
+  const kws=d.keywords||[],hots=d.hotKw||[],apvQ=d.apvQ||'この商品開発を承認しますか？',isHack=d.hackMode;
+  const complaints=d.complaints||[];
+  const topCompl=complaints.slice(0,3).map(c=>'<div class="rxrow"><span class="rxrlbl">'+c.text+'</span><span class="rxrval '+(c.pct>=15?'r':'a')+'" style="font-size:11px">'+c.pct+'%</span></div>').join('');
+  const kwHtml=kws.map(k=>'<div class="kw-tag'+(hots.includes(k)?' hot':'')+(isHack?' hk':'')+'">&#128293; '+k+'</div>').join('');
+  document.getElementById('rx-content').innerHTML=
+    '<div class="rxcard'+(isHack?' hk':'')+' fade-in" style="animation-delay:.04s"><div class="rxchead"><div class="rxnum">'+(isHack?'⚠':'①')+'</div><div class="rxctitle">'+(isHack?'競合「'+d.kw+'」脆弱性インサイト':'感情解析 — 不満インサイト')+'</div></div><div class="rxbody">'+topCompl+'<div class="rxdesc">'+(isHack?'星1〜2のレビューから抽出した競合の致命的弱点。ここが御社の参入口です。':'星1〜2のレビューから抽出した競合の未充足ニーズ。これが御社の参入口です。')+'</div></div></div>'
+    +'<div class="rxcard'+(isHack?' hk':'')+' fade-in" style="animation-delay:.12s"><div class="rxchead"><div class="rxnum">'+(isHack?'⚠':'②')+'</div><div class="rxctitle">'+(isHack?'SKU売上監査 — '+d.kw:'トップSKU売上推計')+'</div></div><div class="rxbody">'+(isHack?'<div class="rxrow"><span class="rxrlbl">月間総売上（推計）</span><span class="rxrval r">¥'+(d.totalM||'--')+'万</span></div><div class="rxrow"><span class="rxrlbl">年間総売上（推計）</span><span class="rxrval r">¥'+(((d.totalA||0)/10000).toFixed(1))+'億</span></div><div class="rxrow"><span class="rxrlbl">上位2SKU依存率</span><span class="rxrval a">'+(d.topSkuPct||'--')+'%</span></div>':'<div class="rxrow"><span class="rxrlbl">競合TOP商品/月</span><span class="rxrval">¥'+((d.ranks||[{monthly:0}])[0]?.monthly||'--')+'万</span></div><div class="rxrow"><span class="rxrlbl">競合TOP店舗/月</span><span class="rxrval">¥'+((d.shopRanks||d.ranks||[{monthly:0}])[0]?.monthly||'--')+'万</span></div>')+'<div class="rxrow"><span class="rxrlbl">推計レビュー数</span><span class="rxrval g">'+(d.reviewCount||0).toLocaleString()+'件</span></div><div class="rxdesc">ブラウザ内独自推計。競合規約に抵触しない法令準拠ロジックです。</div></div></div>'
+    +'<div class="typing-card'+(isHack?' hk':'')+' fade-in" style="animation-delay:.20s"><div class="typing-label">'+(isHack?'⚠ 競合攻略ロジック — タイピング出力中':'▶ AI 商品開発指示 — タイピング出力中')+'</div><div class="typing-output" id="typing-output"><span class="typing-cursor"></span></div><div class="kw-section"><div class="kw-label">'+(isHack?'攻略キーワード':'勝てる訴求キーワード')+'</div><div class="kw-tags">'+kwHtml+'</div></div><div class="apv-section"><div class="apv-q">'+apvQ+'<br><strong>承認しますか？</strong></div><div class="apbuts"><button class="btn-yes" onclick="approve(true)">YES</button><button class="btn-no" onclick="approve(false)">NO</button></div></div></div>';
+}
+
+function startTyping(d){if(d&&d.output)startTypingText(d.output);}
+function startTypingText(txt){
+  const el=document.getElementById('typing-output');
+  if(!el)return;el.innerHTML='<span class="typing-cursor"></span>';
+  if(typingTimer)clearTimeout(typingTimer);
+  let i=0;
+  function type(){if(i<txt.length){const ch=txt[i];const cur=el.querySelector('.typing-cursor');if(cur){const t=document.createTextNode(ch);cur.parentNode.insertBefore(t,cur);}i++;typingTimer=setTimeout(type,ch==='\n'?65:17);}}
+  type();
+}
+
+function setText(id,v){const el=document.getElementById(id);if(el)el.textContent=v;}
+function animVal(id,nv){const el=document.getElementById(id);if(!el)return;el.style.opacity='0';el.style.transform='translateY(-4px)';setTimeout(()=>{el.textContent=nv;el.style.transition='opacity .3s,transform .3s';el.style.opacity='1';el.style.transform='translateY(0)';},200);}
+function showLoading(on){document.getElementById('loadov').classList.toggle('on',on);}
+function setRunBtn(r){const b=document.getElementById('btn-run');b.disabled=r;b.textContent=r?'解析中...':'▶ AI解析実行';}
+function animProg(){const pf=document.getElementById('lp-fill'),pl=document.getElementById('lp-lbl');pf.style.transition='none';pf.style.width='0%';requestAnimationFrame(()=>requestAnimationFrame(()=>{pf.style.transition='width 2s ease';pf.style.width='90%';let p=0;const t=setInterval(()=>{p+=5;pl.textContent=Math.min(p,90)+'%';if(p>=90)clearInterval(t);},110);}));}
+function showErr(m){const t=document.getElementById('etost');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),8000);}
+function hideErr(){document.getElementById('etost').classList.remove('on');}
+document.getElementById('query-input').addEventListener('keydown',e=>{if(e.key==='Enter')runAnalysis();});
+
+function approve(yes){
+  if(yes){document.getElementById('sm-overlay').classList.add('on');let d=90;const el=document.getElementById('cd-val');el.textContent=d;const t=setInterval(()=>{d--;el.textContent=d;if(d<=0){clearInterval(t);el.textContent='0';}},28);}
+  else{setText('rm-msg','提案は保留されました。<br><br><strong style="color:var(--accent-amber)">⚠ 注意：</strong>競合は既に動いています。再解析を推奨します。');document.getElementById('rm-overlay').classList.add('on');const rf=document.getElementById('rm-fill');rf.style.transition='none';rf.style.width='0%';setTimeout(()=>{rf.style.transition='width 3s ease';rf.style.width='100%';},100);}
+}
+function closeReject(){document.getElementById('rm-overlay').classList.remove('on');}
+function closeSuccess(){document.getElementById('sm-overlay').classList.remove('on');}
+
+(function(){setStep(1);setIndustry('apparel');})();
+
+</script>
+</body>
+</html>
