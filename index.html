@@ -41,7 +41,7 @@
         }
         .container {
             display: grid;
-            grid-template-columns: 350px 1fr;
+            grid-template-columns: 380px 1fr;
             gap: 20px;
         }
         .panel {
@@ -55,12 +55,13 @@
         }
         label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--accent-blue);
             margin-bottom: 5px;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        input, select {
+        input {
             width: 100%;
             background-color: var(--bg-color);
             border: 1px solid var(--border);
@@ -70,9 +71,10 @@
             box-sizing: border-box;
             font-family: inherit;
         }
-        input:focus, select:focus {
+        input:focus {
             border-color: var(--accent-blue);
             outline: none;
+            box-shadow: 0 0 5px rgba(56, 189, 248, 0.3);
         }
         .btn {
             width: 100%;
@@ -132,6 +134,7 @@
             font-weight: bold;
             margin-top: 10px;
             text-align: center;
+            font-size: 12px;
         }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     </style>
@@ -139,67 +142,95 @@
 <body>
 
     <div class="header">
-        <h1>CHRONOS ENGINE // MODULE-03</h1>
-        <div style="font-size: 12px; color: var(--accent-green);">● APPAREL INTEL ACTIVE</div>
+        <h1>CHRONOS ENGINE // MODULE-03 // V3.0</h1>
+        <div style="font-size: 12px; color: var(--accent-green);">● HYBRID MULTI-SECTOR ACTIVE</div>
     </div>
 
     <div class="container">
         <div class="panel">
             <div class="form-group">
-                <label>Target Brand / 店舗名</label>
-                <input type="text" id="brandName" value="EDITED" placeholder="例: SHEIN, ZARA, 競合名など">
+                <label>Industry / 業界セクター</label>
+                <input type="text" id="industry" list="industry-list" value="アパレル" placeholder="選択または自由入力">
+                <datalist id="industry-list">
+                    <option value="アパレル">
+                    <option value="コスメ・美容">
+                </datalist>
+            </div>
+
+            <div class="form-group">
+                <label>Target Brand・Store / ブランド名・店舗名</label>
+                <input type="text" id="brandName" list="brand-list" value="AOKI" placeholder="選択または自由入力">
+                <datalist id="brand-list">
+                    <option value="AOKI">
+                    <option value="EDITED">
+                    <option value="SHEIN">
+                    <option value="ZARA">
+                    <option value="UNIQLO">
+                </datalist>
             </div>
             
             <div class="form-group">
                 <label>Product Category / 品種</label>
-                <select id="category">
-                    <option value="T-shirt">Tシャツ/カットソー</option>
-                    <option value="Shirt">シャツ/ブラウス</option>
-                    <option value="Knit">ニット/セーター</option>
-                    <option value="Dress">ワンピース</option>
-                    <option value="Outer">アウター/ジャケット</option>
-                    <option value="Pants">パンツ/ボトムス</option>
-                    <option value="Skirt">スカート</option>
-                    <option value="Bag">バッグ/小物</option>
-                </select>
+                <input type="text" id="category" list="category-list" value="Tシャツ/カットソー" placeholder="選択または自由入力">
+                <datalist id="category-list">
+                    <option value="全品種累計">
+                    <option value="Tシャツ/カットソー">
+                    <option value="シャツ/ブラウス">
+                    <option value="ニット/セーター">
+                    <option value="ワンピース">
+                    <option value="アウター/ジャケット">
+                    <option value="パンツ/ボトムス">
+                    <option value="スカート">
+                    <option value="バッグ/小物">
+                    <option value="スキンケア/化粧水">
+                    <option value="ファンデーション">
+                </datalist>
             </div>
 
             <div class="form-group">
                 <label>Sales Channel / 販売チャネル</label>
-                <select id="channel">
-                    <option value="All">全体（マルチチャネル）</option>
-                    <option value="Amazon">Amazon</option>
-                    <option value="Rakuten">楽天市場</option>
-                    <option value="Shopee">Shopee</option>
-                    <option value="eBay">eBay</option>
-                    <option value="Qoo10">Qoo10</option>
-                    <option value="OwnEC">自社ECサイト</option>
-                </select>
+                <input type="text" id="channel" list="channel-list" value="全体（マルチチャネル）" placeholder="選択または自由入力">
+                <datalist id="channel-list">
+                    <option value="全体（マルチチャネル）">
+                    <option value="Amazon">
+                    <option value="楽天市場">
+                    <option value="Shopee">
+                    <option value="eBay">
+                    <option value="Qoo10">
+                    <option value="自社ECサイト">
+                </datalist>
             </div>
 
             <div class="form-group">
                 <label>Target Region / 対象国・地域</label>
-                <select id="region">
-                    <option value="Global">全世界（累計）</option>
-                    <option value="Japan">日本</option>
-                    <option value="US">アメリカ</option>
-                    <option value="SEA">東南アジア</option>
-                    <option value="EU">ヨーロッパ</option>
-                </select>
+                <input type="text" id="region" list="region-list" value="全世界（累計）" placeholder="選択または自由入力">
+                <datalist id="region-list">
+                    <option value="全世界（累計）">
+                    <option value="日本">
+                    <option value="アメリカ">
+                    <option value="東南アジア">
+                    <option value="ヨーロッパ">
+                </datalist>
             </div>
 
             <div class="form-group">
-                <label>Color / Material / Design (色柄・素材・デザイン)</label>
-                <input type="text" id="attributes" value="モノトーン, コットン, オーバーサイズ" placeholder="コンマ区切りで入力">
+                <label>Attributes / 色柄・素材・デザインなど</label>
+                <input type="text" id="attributes" list="attributes-list" value="モノトーン, コットン, オーバーサイズ" placeholder="コンマ区切り（選択または自由入力）">
+                <datalist id="attributes-list">
+                    <option value="モノトーン, コットン, オーバーサイズ">
+                    <option value="パステルカラー, シルク, フェミニン">
+                    <option value="オーガニック, 無添加, 低刺激（コスメ用）">
+                    <option value="高保湿, ヒアルロン酸, アンチエイジング（コスメ用）">
+                </datalist>
             </div>
 
             <button class="btn" onclick="runAnalysis()">AI多角分析・グラフ生成</button>
-            <div class="loading" id="loadingText">▶ ENGINE PROCESSING DATA...</div>
+            <div class="loading" id="loadingText">▶ ENGINE RUNNING CRITICAL DATA...</div>
         </div>
 
         <div class="dashboard">
             <div class="chart-container">
-                <div class="chart-title">製品売上ランキング（推定数量）</div>
+                <div class="chart-title" id="titleProducts">製品売上ランキング（推定数量）</div>
                 <canvas id="chartProducts"></canvas>
             </div>
             <div class="chart-container">
@@ -259,6 +290,7 @@
             loading.style.display = 'block';
 
             const payload = {
+                industry: document.getElementById('industry').value,
                 brand: document.getElementById('brandName').value,
                 category: document.getElementById('category').value,
                 channel: document.getElementById('channel').value,
@@ -266,25 +298,33 @@
                 attributes: document.getElementById('attributes').value
             };
 
+            // 動的にグラフタイトルを変更
+            document.getElementById('titleProducts').innerText = `${payload.category} 売上ランキング（推定数量）`;
+
             try {
                 const response = await fetch('/api/analyze', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
+                
                 const result = await response.json();
 
-                // 4つのグラフを動的にレンダリング
-                initChart('chartProducts', 'bar', result.chartProducts.labels, result.chartProducts.data, '売上数', '#38bdf8');
+                if (result.error) {
+                    document.getElementById('outputText').innerText = `【システムエラー】\n${result.error}\n\n原因として、GeminiのAPIキーの設定漏れ、またはAIの応答データ破損が考えられます。Vercelの環境変数を確認してください。`;
+                    return;
+                }
+
+                // グラフ描画
+                initChart('chartProducts', 'bar', result.chartProducts.labels, result.chartProducts.data, '推定売上数', '#38bdf8');
                 initChart('chartChannels', 'pie', result.chartChannels.labels, result.chartChannels.data, 'シェア', ['#38bdf8', '#34d399', '#a78bfa', '#f472b6', '#fbbf24', '#e5e7eb']);
                 initChart('chartDesigns', 'doughnut', result.chartDesigns.labels, result.chartDesigns.data, '構成比', ['#a78bfa', '#f472b6', '#34d399', '#fbbf24']);
                 initChart('chartSentiments', 'bar', result.chartSentiments.labels, result.chartSentiments.data, '不満・評価件数', '#f472b6');
 
-                // 戦略テキストの出力
                 document.getElementById('outputText').innerText = result.commentary;
 
             } catch (error) {
-                document.getElementById('outputText').innerText = "エラーが発生しました。設定を確認してください。";
+                document.getElementById('outputText').innerText = `【通信エラー発生】\nサーバーとの通信に失敗しました。\n詳細: ${error.message}`;
                 console.error(error);
             } finally {
                 btn.disabled = false;
