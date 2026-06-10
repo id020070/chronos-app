@@ -41,7 +41,7 @@
         }
         .container {
             display: grid;
-            grid-template-columns: 380px 1fr;
+            grid-template-columns: 400px 1fr;
             gap: 20px;
         }
         .panel {
@@ -51,7 +51,9 @@
             padding: 20px;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
+            border-bottom: 1px dashed #1f2937;
+            padding-bottom: 12px;
         }
         label {
             display: block;
@@ -59,22 +61,30 @@
             color: var(--accent-blue);
             margin-bottom: 5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            font-weight: bold;
         }
-        input {
+        select, input {
             width: 100%;
             background-color: var(--bg-color);
             border: 1px solid var(--border);
             color: var(--text-main);
-            padding: 10px;
+            padding: 8px;
             border-radius: 4px;
             box-sizing: border-box;
             font-family: inherit;
+            font-size: 13px;
         }
-        input:focus {
+        input {
+            margin-top: 5px;
+            border-color: #2d3748;
+        }
+        input::placeholder {
+            color: #4a5568;
+            font-size: 11px;
+        }
+        select:focus, input:focus {
             border-color: var(--accent-blue);
             outline: none;
-            box-shadow: 0 0 5px rgba(56, 189, 248, 0.3);
         }
         .btn {
             width: 100%;
@@ -87,7 +97,6 @@
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-top: 10px;
         }
         .btn:hover {
             opacity: 0.9;
@@ -142,86 +151,88 @@
 <body>
 
     <div class="header">
-        <h1>CHRONOS ENGINE // MODULE-03 // V3.0</h1>
-        <div style="font-size: 12px; color: var(--accent-green);">● HYBRID MULTI-SECTOR ACTIVE</div>
+        <h1>CHRONOS ENGINE // MODULE-03 // V3.5</h1>
+        <div style="font-size: 12px; color: var(--accent-green);">● STABLE HYBRID CONTROL ACTIVE</div>
     </div>
 
     <div class="container">
         <div class="panel">
             <div class="form-group">
-                <label>Industry / 業界セクター</label>
-                <input type="text" id="industry" list="industry-list" value="アパレル" placeholder="選択または自由入力">
-                <datalist id="industry-list">
-                    <option value="アパレル">
-                    <option value="コスメ・美容">
-                </datalist>
+                <label>1. Industry / 業界</label>
+                <select id="industry-select">
+                    <option value="アパレル">アパレル（衣料・ファッション）</option>
+                    <option value="コスメ・美容">コスメ・美容（化粧品・スキンケア）</option>
+                </select>
+                <input type="text" id="industry-custom" placeholder="✍ 別の業界を自由入力する場合はここに入力">
             </div>
 
             <div class="form-group">
-                <label>Target Brand・Store / ブランド名・店舗名</label>
-                <input type="text" id="brandName" list="brand-list" value="AOKI" placeholder="選択または自由入力">
-                <datalist id="brand-list">
-                    <option value="AOKI">
-                    <option value="EDITED">
-                    <option value="SHEIN">
-                    <option value="ZARA">
-                    <option value="UNIQLO">
-                </datalist>
+                <label>2. Target Brand・Store / ブランド名・店舗名</label>
+                <select id="brand-select">
+                    <option value="AOKI">AOKI</option>
+                    <option value="EDITED">EDITED</option>
+                    <option value="SHEIN">SHEIN</option>
+                    <option value="ZARA">ZARA</option>
+                    <option value="UNIQLO">UNIQLO</option>
+                    <option value="資生堂">資生堂 (SHISEIDO)</option>
+                    <option value="KATE">KATE</option>
+                </select>
+                <input type="text" id="brand-custom" placeholder="✍ 別のブランド・競合店舗を自由入力">
             </div>
             
             <div class="form-group">
-                <label>Product Category / 品種</label>
-                <input type="text" id="category" list="category-list" value="Tシャツ/カットソー" placeholder="選択または自由入力">
-                <datalist id="category-list">
-                    <option value="全品種累計">
-                    <option value="Tシャツ/カットソー">
-                    <option value="シャツ/ブラウス">
-                    <option value="ニット/セーター">
-                    <option value="ワンピース">
-                    <option value="アウター/ジャケット">
-                    <option value="パンツ/ボトムス">
-                    <option value="スカート">
-                    <option value="バッグ/小物">
-                    <option value="スキンケア/化粧水">
-                    <option value="ファンデーション">
-                </datalist>
+                <label>3. Product Category / 品種</label>
+                <select id="category-select">
+                    <option value="全品種累計">★全品種累計</option>
+                    <option value="Tシャツ/カットソー">Tシャツ/カットソー</option>
+                    <option value="シャツ/ブラウス">シャツ/ブラウス</option>
+                    <option value="ニット/セーター">ニット/セーター</option>
+                    <option value="ワンピース">ワンピース</option>
+                    <option value="アウター/ジャケット">アウター/ジャケット</option>
+                    <option value="パンツ/ボトムス">パンツ/ボトムス</option>
+                    <option value="スキンケア/化粧水">スキンケア/化粧水</option>
+                    <option value="美容液/セラム">美容液/セラム</option>
+                    <option value="ファンデーション">ファンデーション</option>
+                    <option value="リップ/口紅">リップ/口紅</option>
+                </select>
+                <input type="text" id="category-custom" placeholder="✍ 別の具体的な品種を自由入力">
             </div>
 
             <div class="form-group">
-                <label>Sales Channel / 販売チャネル</label>
-                <input type="text" id="channel" list="channel-list" value="全体（マルチチャネル）" placeholder="選択または自由入力">
-                <datalist id="channel-list">
-                    <option value="全体（マルチチャネル）">
-                    <option value="Amazon">
-                    <option value="楽天市場">
-                    <option value="Shopee">
-                    <option value="eBay">
-                    <option value="Qoo10">
-                    <option value="自社ECサイト">
-                </datalist>
+                <label>4. Sales Channel / 販売チャネル</label>
+                <select id="channel-select">
+                    <option value="全体（マルチチャネル）">全体（マルチチャネル集計）</option>
+                    <option value="Amazon">Amazon</option>
+                    <option value="楽天市場">楽天市場</option>
+                    <option value="Shopee">Shopee</option>
+                    <option value="eBay">eBay</option>
+                    <option value="Qoo10">Qoo10</option>
+                    <option value="自社ECサイト">自社ECサイト</option>
+                </select>
+                <input type="text" id="channel-custom" placeholder="✍ 別のチャネル（例: TikTok Shop等）を自由入力">
             </div>
 
             <div class="form-group">
-                <label>Target Region / 対象国・地域</label>
-                <input type="text" id="region" list="region-list" value="全世界（累計）" placeholder="選択または自由入力">
-                <datalist id="region-list">
-                    <option value="全世界（累計）">
-                    <option value="日本">
-                    <option value="アメリカ">
-                    <option value="東南アジア">
-                    <option value="ヨーロッパ">
-                </datalist>
+                <label>5. Target Region / 対象国・地域</label>
+                <select id="region-select">
+                    <option value="全世界（累計）">全世界（累計）</option>
+                    <option value="日本">日本</option>
+                    <option value="アメリカ">アメリカ</option>
+                    <option value="東南アジア">東南アジア</option>
+                    <option value="ヨーロッパ">ヨーロッパ</option>
+                </select>
+                <input type="text" id="region-custom" placeholder="✍ 別の特定の国名（例: 台湾、英国）を自由入力">
             </div>
 
             <div class="form-group">
-                <label>Attributes / 色柄・素材・デザインなど</label>
-                <input type="text" id="attributes" list="attributes-list" value="モノトーン, コットン, オーバーサイズ" placeholder="コンマ区切り（選択または自由入力）">
-                <datalist id="attributes-list">
-                    <option value="モノトーン, コットン, オーバーサイズ">
-                    <option value="パステルカラー, シルク, フェミニン">
-                    <option value="オーガニック, 無添加, 低刺激（コスメ用）">
-                    <option value="高保湿, ヒアルロン酸, アンチエイジング（コスメ用）">
-                </datalist>
+                <label>6. Attributes / 色柄・素材・デザイン傾向</label>
+                <select id="attributes-select">
+                    <option value="モノトーン, コットン, オーバーサイズ">モノトーン, コットン, オーバーサイズ</option>
+                    <option value="パステルカラー, シルク, フェミニン">パステルカラー, シルク, フェミニン</option>
+                    <option value="オーガニック, 無添加, 低刺激（コスメ用）">オーガニック, 無添加, 低刺激（コスメ用）</option>
+                    <option value="高保湿, ヒアルロン酸, アンチエイジング（コスメ用）">高保湿, ヒアルロン酸, アンチエイジング</option>
+                </select>
+                <input type="text" id="attributes-custom" placeholder="✍ 自由な属性キーワード（コンマ区切り）">
             </div>
 
             <button class="btn" onclick="runAnalysis()">AI多角分析・グラフ生成</button>
@@ -283,6 +294,13 @@
             });
         }
 
+        // 自由入力があればそれを最優先、なければセレクトボックスの値を採用する関数
+        function getHybridValue(selectId, customId) {
+            const customVal = document.getElementById(customId).value.trim();
+            if (customVal !== "") return customVal;
+            return document.getElementById(selectId).value;
+        }
+
         async function runAnalysis() {
             const btn = document.querySelector('.btn');
             const loading = document.getElementById('loadingText');
@@ -290,15 +308,14 @@
             loading.style.display = 'block';
 
             const payload = {
-                industry: document.getElementById('industry').value,
-                brand: document.getElementById('brandName').value,
-                category: document.getElementById('category').value,
-                channel: document.getElementById('channel').value,
-                region: document.getElementById('region').value,
-                attributes: document.getElementById('attributes').value
+                industry: getHybridValue('industry-select', 'industry-custom'),
+                brand: getHybridValue('brand-select', 'brand-custom'),
+                category: getHybridValue('category-select', 'category-custom'),
+                channel: getHybridValue('channel-select', 'channel-custom'),
+                region: getHybridValue('region-select', 'region-custom'),
+                attributes: getHybridValue('attributes-select', 'attributes-custom')
             };
 
-            // 動的にグラフタイトルを変更
             document.getElementById('titleProducts').innerText = `${payload.category} 売上ランキング（推定数量）`;
 
             try {
@@ -311,11 +328,10 @@
                 const result = await response.json();
 
                 if (result.error) {
-                    document.getElementById('outputText').innerText = `【システムエラー】\n${result.error}\n\n原因として、GeminiのAPIキーの設定漏れ、またはAIの応答データ破損が考えられます。Vercelの環境変数を確認してください。`;
+                    document.getElementById('outputText').innerText = `【システムエラー】\n${result.error}`;
                     return;
                 }
 
-                // グラフ描画
                 initChart('chartProducts', 'bar', result.chartProducts.labels, result.chartProducts.data, '推定売上数', '#38bdf8');
                 initChart('chartChannels', 'pie', result.chartChannels.labels, result.chartChannels.data, 'シェア', ['#38bdf8', '#34d399', '#a78bfa', '#f472b6', '#fbbf24', '#e5e7eb']);
                 initChart('chartDesigns', 'doughnut', result.chartDesigns.labels, result.chartDesigns.data, '構成比', ['#a78bfa', '#f472b6', '#34d399', '#fbbf24']);
@@ -325,7 +341,6 @@
 
             } catch (error) {
                 document.getElementById('outputText').innerText = `【通信エラー発生】\nサーバーとの通信に失敗しました。\n詳細: ${error.message}`;
-                console.error(error);
             } finally {
                 btn.disabled = false;
                 loading.style.display = 'none';
