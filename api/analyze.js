@@ -10,7 +10,6 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'サーバー環境変数に GEMINI_API_KEY が設定されていません。' });
     }
 
-    // 未入力（空文字）の項目に対するAI用のケア処理
     const colorStr = color ? color : "未指定（全体集計）";
     const designStr = design ? design : "未指定（全体集計）";
     const materialStr = material ? material : "未指定（全体集計）";
@@ -26,7 +25,7 @@ export default async function handler(req, res) {
 ・分析品種: ${category}
 ・指定販売チャネル: ${channel}
 ・対象国・地域: ${region}
-・個別の絞り込み条件（空欄の場合は全体として集計・分析せよ）：
+・個別の絞り込み条件：
   - 指定の色柄: ${colorStr}
   - 指定のデザイン傾向: ${designStr}
   - 指定の素材・成分: ${materialStr}
@@ -54,8 +53,8 @@ export default async function handler(req, res) {
 `;
 
     try {
-        // 標準的な「v1beta」のエンドポイントにURLを復旧
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        // 2026年の標準安定モデルである gemini-2.0-flash にアップグレード
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -74,7 +73,6 @@ export default async function handler(req, res) {
         }
 
         let rawText = data.candidates[0].content.parts[0].text;
-        // Markdownの余計なラッパー（```json ... ```）を排除
         rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
         
         const cleanJson = JSON.parse(rawText);
