@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS ULTRA - EDITED HACK V5.5</title>
+    <title>CHRONOS ULTRA - CORE ANALYSIS SYSTEM</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -42,7 +42,6 @@
             color: var(--accent-purple);
             text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
         }
-        /* トグル用レイアウト */
         .container {
             display: flex;
             gap: 20px;
@@ -62,7 +61,6 @@
             visibility: visible;
             height: fit-content;
         }
-        /* パネルが閉じられたときのスタイル */
         .panel.collapsed {
             width: 0;
             min-width: 0;
@@ -119,7 +117,6 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        /* 開閉ボタンのスタイル */
         .ctrl-btn {
             background-color: #1e293b;
             color: var(--accent-blue);
@@ -150,7 +147,7 @@
             padding-left: 8px;
             font-weight: bold;
         }
-        .title-edited { border-left-color: var(--accent-orange); }
+        .title-core { border-left-color: var(--accent-orange); }
         .title-original { border-left-color: var(--accent-pink); }
         
         .output-panel {
@@ -181,7 +178,7 @@
 <body>
 
     <div class="header">
-        <h1>CHRONOS ULTRA // VER 5.5 // PRO EDITED HACK</h1>
+        <h1>CHRONOS ULTRA // VER 5.6 // PRO INTELLIGENCE SYSTEM</h1>
         <div style="font-size: 12px; color: var(--accent-green);">● EXPERIMENTAL WORKSPACE</div>
     </div>
 
@@ -267,7 +264,7 @@
             </div>
 
             <button class="btn" onclick="runAnalysis()">コア分析マトリクス実行</button>
-            <div class="loading" id="loadingText">▶ ENGINE CRUNCHING EDITED BIG DATA SECTOR...</div>
+            <div class="loading" id="loadingText">▶ ENGINE CRUNCHING MARKET BIG DATA SECTOR...</div>
         </div>
 
         <div class="main-content">
@@ -275,7 +272,7 @@
             
             <div class="dashboard">
                 <div class="chart-container">
-                    <div class="chart-title title-edited">① アソートメント：製品売上・品揃え構成比</div>
+                    <div class="chart-title t-core">① アソートメント：製品売上・品揃え構成比</div>
                     <canvas id="chartProducts"></canvas>
                 </div>
                 <div class="chart-container">
@@ -283,15 +280,15 @@
                     <canvas id="chartChannels"></canvas>
                 </div>
                 <div class="chart-container">
-                    <div class="chart-title title-edited">③ プライシング：競合価格帯別アイテム分布グラフ</div>
+                    <div class="chart-title t-core">③ プライシング：市場価格帯別アイテム分布グラフ</div>
                     <canvas id="chartPrices"></canvas>
                 </div>
                 <div class="chart-container">
-                    <div class="chart-title title-edited">④ ディスカウント：平均値引き率・値下げ規模分布</div>
+                    <div class="chart-title t-core">④ ディスカウント：市場値引き率・値下げ規模分布</div>
                     <canvas id="chartDiscounts"></canvas>
                 </div>
                 <div class="chart-container">
-                    <div class="chart-title title-edited">⑤ スピード：完売までの平均日数＆再入荷追跡</div>
+                    <div class="chart-title t-core">⑤ スピード：完売までの平均日数＆再入荷追跡</div>
                     <canvas id="chartSpeeds"></canvas>
                 </div>
                 <div class="chart-container">
@@ -300,7 +297,7 @@
                 </div>
 
                 <div class="output-panel">
-                    <div class="chart-title title-original">CHRONOS EDITED超越型・商品開発戦略指示書 OUTPUT</div>
+                    <div class="chart-title title-original">CHRONOS 商品開発戦略指示書 OUTPUT</div>
                     <div class="output-text" id="outputText">ここにAIによるリアルな戦闘指示書が出力されます。</div>
                 </div>
             </div>
@@ -308,7 +305,6 @@
     </div>
 
     <script>
-        // サイドバー開閉トグル関数
         function togglePanel() {
             const panel = document.getElementById('sidePanel');
             const openBtn = document.getElementById('openPanelBtn');
@@ -367,12 +363,11 @@
             if (charts[id]) charts[id].destroy();
             const ctx = document.getElementById(id).getContext('2d');
             
-            // 💡 超絶テクニック：感情分析の満足（緑）と不満（ピンク）を自動で色分けする
             let bgColors = color;
             if (id === 'chartSentiments') {
                 bgColors = labels.map(l => {
-                    if (l.includes('満足')) return '#34d399'; // ネオングリーン
-                    if (l.includes('不満')) return '#f472b6'; // ネオンピンク
+                    if (l.includes('満足')) return '#34d399';
+                    if (l.includes('不満')) return '#f472b6';
                     return '#a78bfa';
                 });
             }
@@ -418,7 +413,6 @@
                 material: getHybridValue('material-select', 'material-custom')
             };
 
-            // 国に応じて通貨単位を自動変更
             const unit = (payload.region.includes('日本')) ? '売上高 (億円)' : '売上高 (万ドル)';
             document.getElementById('titleChannelVolume').innerText = `② マーケット：販売チャネル別 ${unit}`;
 
@@ -436,7 +430,6 @@
                     return;
                 }
 
-                // 売上高は円グラフから「棒グラフ（bar）」へ劇的変更
                 initChart('chartProducts', 'bar', result.chartProducts.labels, result.chartProducts.data, '推定数量', '#38bdf8');
                 initChart('chartChannels', 'bar', result.chartChannels.labels, result.chartChannels.data, unit, '#34d399');
                 initChart('chartPrices', 'line', result.chartPrices.labels, result.chartPrices.data, 'アイテム数分布', '#fbbf24');
