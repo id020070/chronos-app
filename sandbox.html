@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS ULTRA - SYSTEM V6.0</title>
+    <title>CHRONOS ULTRA - CORE INTELLIGENCE SYSTEM</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -57,8 +57,6 @@
             min-width: 390px;
             box-sizing: border-box;
             transition: all 0.3s ease;
-            opacity: 1;
-            visibility: visible;
             height: fit-content;
         }
         .panel.collapsed {
@@ -216,7 +214,7 @@
 <body>
 
     <div class="header">
-        <h1>CHRONOS ULTRA // PRO INTELLIGENCE SYSTEM // V6.0</h1>
+        <h1>CHRONOS ULTRA // PRO INTELLIGENCE SYSTEM // V6.5</h1>
         <div style="font-size: 12px; color: var(--accent-green);">● SECURITY ENCRYPTED WORKSPACE</div>
     </div>
 
@@ -312,6 +310,17 @@
                 <input type="text" id="size-custom" placeholder="✍ 別の特定のサイズ区分を自由入力">
             </div>
 
+            <div class="form-group">
+                <label>9. Period / 分析対象期間</label>
+                <select id="period-select">
+                    <option value="直近3ヶ月（最新トレンドデータ）">直近3ヶ月（最新トレンド）</option>
+                    <option value="直近1年間（通年市場データ累計）">直近1年間（通年市場データ）</option>
+                    <option value="2025年 秋冬（AWシーズン分析）">2025年 秋冬（AW）</option>
+                    <option value="2026年 春夏最新データ（SS速報）">2026年 春夏最新データ（SS）</option>
+                </select>
+                <input type="text" id="period-custom" placeholder="✍ 特定の期間・商戦を自由入力（例: 2025ブラックフライデーなど）">
+            </div>
+
             <button class="btn" onclick="runAnalysis()">多角分析マトリクス実行</button>
             <div class="loading" id="loadingText">▶ ENGINE CRUNCHING MARKET BIG DATA SECTOR...</div>
         </div>
@@ -382,7 +391,6 @@
             else openBtn.style.display = 'none';
         }
 
-        // SHEIN・トレンド分析に基づいたアパレル特化型の品種リスト
         const industryDb = {
             "アパレル": {
                 brands: [
@@ -438,7 +446,6 @@
         function initChart(id, type, labels, data, label, color, clickHandler = null) {
             if (charts[id]) charts[id].destroy();
             const ctx = document.getElementById(id).getContext('2d');
-            
             charts[id] = new Chart(ctx, {
                 type: type,
                 data: {
@@ -464,14 +471,12 @@
             });
         }
 
-        // ① 製品クリック：販売数・売上高・平均単価を出す
         function handleProductClick(label, value) {
             const panel = document.getElementById('detailPanel');
             const header = document.getElementById('detailPanelHeader');
             const content = document.getElementById('detailPanelContent');
             panel.style.display = 'block';
             header.innerText = `▶ アソートメント詳細マトリクス: ${label}`;
-            
             if (rawServerResult && rawServerResult.chartProductsDetail && rawServerResult.chartProductsDetail[label]) {
                 const detail = rawServerResult.chartProductsDetail[label];
                 content.innerHTML = `
@@ -481,8 +486,7 @@
                             <strong style="font-size:16px; color:var(--accent-blue);">${detail.sales}</strong>
                         </div>
                         <div style="border: 1px dashed var(--accent-green); padding: 10px; border-radius: 4px;">
-                            <span style="font-size:11px; color:var(--text-muted);">推定総売上高</span><br>
-                            <strong style="font-size:16px; color:var(--accent-green);">${detail.revenue}</strong>
+                            <span style="font-size:16px; color:var(--accent-green);">${detail.revenue}</strong>
                         </div>
                         <div style="border: 1px dashed var(--accent-yellow); padding: 10px; border-radius: 4px;">
                             <span style="font-size:11px; color:var(--text-muted);">平均販売単価</span><br>
@@ -491,19 +495,17 @@
                     </div>
                 `;
             } else {
-                content.innerHTML = `商品名「${label}」の内部データ: 展開規模 ${value}点`;
+                content.innerHTML = `データ展開中...`;
             }
             panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // ③ 国クリック：全世界選択時の国別の「売上高・販売数・単価」をドカンと数字で出す！
         function handleRegionClick(label, value) {
             const panel = document.getElementById('detailPanel');
             const header = document.getElementById('detailPanelHeader');
             const content = document.getElementById('detailPanelContent');
             panel.style.display = 'block';
             header.innerText = `▶ グローバル地域ドリルダウン: ${label}市場`;
-            
             if (rawServerResult && rawServerResult.chartRegionsDetail && rawServerResult.chartRegionsDetail[label]) {
                 const detail = rawServerResult.chartRegionsDetail[label];
                 content.innerHTML = `
@@ -523,35 +525,32 @@
                     </div>
                 `;
             } else {
-                content.innerHTML = `地域名「${label}」の売上規模: ${value} (詳細テレメトリ受信完了)`;
+                content.innerHTML = `詳細データ受信完了`;
             }
             panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // ⑧⑨ レビュークリック：ECサイトへのリンク付き生レビュー
         function handleReviewClick(type, label, value) {
             const panel = document.getElementById('detailPanel');
             const header = document.getElementById('detailPanelHeader');
             const content = document.getElementById('detailPanelContent');
             panel.style.display = 'block';
             header.innerText = `▶ 抽出口コミテキストログ [${type}要因: ${label}]`;
-            
             const dbKey = type === '満足' ? 'chartSatisfactionsReviews' : 'chartComplaintsReviews';
-            
             if (rawServerResult && rawServerResult[dbKey] && rawServerResult[dbKey][label]) {
                 const reviews = rawServerResult[dbKey][label];
-                let cardsHtml = `<div style="margin-top: 5px; font-size:11px; color:var(--text-muted); margin-bottom:8px;">ECモジュール内からリアルなカスタマーレビューを抽出しました（上位3件）:</div>`;
+                let cardsHtml = `<div style="margin-top: 5px; font-size:11px; color:var(--text-muted); margin-bottom:8px;">カスタマーレビューサンプル（上位3件）:</div>`;
                 reviews.forEach(r => {
                     cardsHtml += `
                         <div class="review-card" style="border-left-color: ${type === '満足' ? 'var(--accent-green)' : 'var(--accent-pink)'}">
                             <div>"${r.text}"</div>
-                            <a href="${r.url}" target="_blank" class="review-link" style="color: var(--accent-blue);">🔗 ECストアの原文レビューをブラウザで開く ➔</a>
+                            <a href="${r.url}" target="_blank" class="review-link" style="color: var(--accent-blue);">🔗 ECストアの原文レビューを開く ➔</a>
                         </div>
                     `;
                 });
                 content.innerHTML = cardsHtml;
             } else {
-                content.innerHTML = `要因「${label}」に関するサンプルレビューを展開中...`;
+                content.innerHTML = `要因「${label}」に関するサンプルレビュー展開中...`;
             }
             panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
@@ -576,11 +575,11 @@
                 region: getHybridValue('region-select', 'region-custom'),
                 color: getHybridValue('color-select', 'color-custom'),
                 design: getHybridValue('design-select', 'design-custom'),
-                size: getHybridValue('size-select', 'size-custom')
+                size: getHybridValue('size-select', 'size-custom'),
+                period: getHybridValue('period-select', 'period-custom') // 🛠️ ペイロードに期間を追加
             };
 
-            const isJapan = payload.region.includes('日本');
-            const unit = isJapan ? '売上高 (億円)' : '売上高 (万ドル)';
+            const unit = payload.region.includes('日本') ? '売上高 (億円)' : '売上高 (万ドル)';
             document.getElementById('titleChannelVolume').innerText = `② マーケット：販売チャネル別 ${unit}`;
             document.getElementById('titleRegionVolume').innerText = `③ 地域：対象国・地域別 ${unit} (※クリック詳細)`;
 
@@ -590,17 +589,12 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                
                 const result = await response.json();
-
                 if (result.error) {
                     document.getElementById('outputText').innerText = `【システムエラー】\n${result.error}`;
                     return;
                 }
-
                 rawServerResult = result;
-
-                // 全9大コア分析マトリクスを一斉レンダリング！
                 initChart('chartProducts', 'bar', result.chartProducts.labels, result.chartProducts.data, '展開数量', '#38bdf8', handleProductClick);
                 initChart('chartChannels', 'bar', result.chartChannels.labels, result.chartChannels.data, unit, '#34d399');
                 initChart('chartRegions', 'bar', result.chartRegions.labels, result.chartRegions.data, unit, '#f97316', handleRegionClick);
@@ -608,12 +602,9 @@
                 initChart('chartDiscounts', 'doughnut', result.chartDiscounts.labels, result.chartDiscounts.data, '値引き比率', ['#f97316', '#fbbf24', '#34d399', '#1e293b']);
                 initChart('chartSizes', 'pie', result.chartSizes.labels, result.chartSizes.data, '構成比', ['#a78bfa', '#f472b6', '#38bdf8', '#fbbf24', '#e5e7eb']);
                 initChart('chartSpeeds', 'bar', result.chartSpeeds.labels, result.chartSpeeds.data, '日数 / 型数', '#a78bfa');
-                
                 initChart('chartSatisfactions', 'bar', result.chartSatisfactions.labels, result.chartSatisfactions.data, '満足度件数', '#34d399', (lbl, val) => handleReviewClick('満足', lbl, val));
                 initChart('chartComplaints', 'bar', result.chartComplaints.labels, result.chartComplaints.data, '不満度件数', '#f472b6', (lbl, val) => handleReviewClick('不満', lbl, val));
-
                 document.getElementById('outputText').innerText = result.commentary;
-
             } catch (error) {
                 document.getElementById('outputText').innerText = `【通信エラー発生】サーバーとの通信に失敗しました。`;
             } finally {

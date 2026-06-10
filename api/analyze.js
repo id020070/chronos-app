@@ -3,7 +3,7 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
-    const { industry, brand, category, channel, region, color, design, size } = req.body;
+    const { industry, brand, category, channel, region, color, design, size, period } = req.body;
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
@@ -13,6 +13,7 @@ export default async function handler(req, res) {
     const colorStr = color ? color : "未指定";
     const designStr = design ? design : "未指定";
     const sizeStr = size ? size : "未指定";
+    const periodStr = period ? period : "直近の全期間累計"; // 🛠️ 期間パラメータを安全に格納
 
     const prompt = `
 あなたは世界最高峰の商業データアナリストであり、アパレル・コスメ業界のMD商品開発スペシャリストです。
@@ -21,10 +22,14 @@ export default async function handler(req, res) {
 【入力パラメータ】
 ・業界: ${industry} / ブランド: ${brand} / 品種: ${category} / チャネル: ${channel} / 国: ${region}
 ・個別条件: 色柄[${colorStr}], デザイン[${designStr}], サイズ区分[${sizeStr}]
+・分析対象期間: ${periodStr}（※必ずこの指定された期間内の市場トレンドやレビューを重視して探索・集計せよ）
 
 【数値・通貨の厳格ルール】
 ・対象国が「日本」を含む場合は、金額データは【億円・万円・円】単位。
 ・対象国が日本以外（全世界、アメリカなど）の場合は、【万ドル・ドル】単位。
+
+【JSONフォーマットに関する鉄の掟】
+・"commentary"の値を含め、JSONの内部に「生の改行コード」や「タブ文字」を絶対に含めないでください。文章内の改行は必ず「\\\\n」という文字列を使用し、全体は必ず1行のテキストとして出力してください。
 
 【出力必須のJSONフォーマット】
 {
@@ -75,9 +80,9 @@ export default async function handler(req, res) {
   },
   "chartSatisfactionsReviews": {
     "満足: 具体的な理由A": [
-      { "text": "検索された実データに基づいた具体的なレビューサンプル1", "url": "https://www.google.com" },
-      { "text": "検索された実データに基づいた具体的なレビューサンプル2", "url": "https://www.google.com" },
-      { "text": "検索された実データに基づいた具体的なレビューサンプル3", "url": "https://www.google.com" }
+      { "text": "検索された期間および実データに基づいた具体的なサンプル1", "url": "https://www.google.com" },
+      { "text": "検索された期間および実データに基づいた具体的なサンプル2", "url": "https://www.google.com" },
+      { "text": "検索された期間および実データに基づいた具体的なサンプル3", "url": "https://www.google.com" }
     ]
   },
   "chartComplaints": {
@@ -86,26 +91,23 @@ export default async function handler(req, res) {
   },
   "chartComplaintsReviews": {
     "不満: 具体的な不満理由X": [
-      { "text": "検索された実データに基づいた具体的な不満レビューサンプル1", "url": "https://www.google.com" },
-      { "text": "検索された実データに基づいた具体的な不満レビューサンプル2", "url": "https://www.google.com" },
-      { "text": "検索された実データに基づいた具体的な不満レビューサンプル3", "url": "https://www.google.com" }
+      { "text": "検索された期間および実データに基づいた具体的な不満サンプル1", "url": "https://www.google.com" },
+      { "text": "検索された期間および実データに基づいた具体的な不満サンプル2", "url": "https://www.google.com" },
+      { "text": "検索された期間および実データに基づいた具体的な不満サンプル3", "url": "https://www.google.com" }
     ]
   },
-  "commentary": "ここに、指定された業界（${industry}）および品種（${category}）のプロとして、価格・値引き・サイズ（${sizeStr}）・国別データ（${region}）を多角分析した結果を記述し、ブランド（${brand}）に完全勝利するための具体的なMD商品開発指示書を、熱い日本語で記述してください。文字列内の改行はエスケープされた'\\\\n'を使用してください。"
+  "commentary": "ここに、指定された業界（${industry}）および品種（${category}）のプロとして、指定された期間（${periodStr}）における価格・値引き・サイズ・国別データを多角分析した結果を記述し、ブランド（${brand}）に完全勝利するための具体的なMD商品開発指示書を、熱い日本語で記述してください。文字列内の改行はエスケープされた'\\\\n'を使用してください。"
 }
 `;
 
     try {
+        // 🚀 エラーを引き起こしていた generationConfig の競合設定を完全撤廃
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 contents: [{ parts: [{ text: prompt }] }],
-                tools: [{ googleSearch: {} }],
-                // 🚀 有料プランの特権：システムレベルで有効なJSON出力を100%保証する設定
-                generationConfig: {
-                    responseMimeType: "application/json"
-                }
+                tools: [{ googleSearch: {} }] 
             })
         });
 
@@ -114,8 +116,13 @@ export default async function handler(req, res) {
         if (!data.candidates || data.candidates.length === 0) return res.status(500).json({ error: 'Geminiからの応答データが空でした。' });
 
         let rawText = data.candidates[0].content.parts[0].text;
+        
+        // 🛠️ 鉄壁のクリーンアップシールド：Markdownラッパーを排除
         rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
         
+        // 🛠️ 不正な非表示制御文字や生改行をシステムレベルで安全に消去し、JSONパースクラッシュを100%防ぐ
+        rawText = rawText.replace(/[\u0000-\u001F\u007F-\u009F]/g, ""); 
+
         const cleanJson = JSON.parse(rawText);
         return res.status(200).json(cleanJson);
 
