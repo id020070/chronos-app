@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS ULTRA - CORE INTELLIGENCE SYSTEM</title>
+    <title>CHRONOS ULTRA - SYSTEM V6.0</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -154,8 +154,8 @@
         }
         .title-green { border-left-color: var(--accent-green); }
         .title-pink { border-left-color: var(--accent-pink); }
+        .title-orange { border-left-color: var(--accent-orange); }
         
-        /* 🛠️ 新設：クリックデータ連動詳細パネル */
         .detail-panel {
             grid-column: span 2;
             background: linear-gradient(180deg, #111e36, #0f172a);
@@ -187,7 +187,6 @@
             display: inline-block;
             margin-top: 4px;
         }
-        .review-link:hover { text-decoration: underline; }
         
         .output-panel {
             grid-column: span 2;
@@ -217,7 +216,7 @@
 <body>
 
     <div class="header">
-        <h1>CHRONOS ULTRA // PRO INTELLIGENCE SYSTEM</h1>
+        <h1>CHRONOS ULTRA // PRO INTELLIGENCE SYSTEM // V6.0</h1>
         <div style="font-size: 12px; color: var(--accent-green);">● SECURITY ENCRYPTED WORKSPACE</div>
     </div>
 
@@ -273,33 +272,44 @@
             </div>
 
             <div class="form-group">
-                <label>6. Color / 色柄</label>
+                <label>6. Color・Pattern / 色柄</label>
                 <select id="color-select">
                     <option value="">-- 選択なし（全体分析） --</option>
-                    <option value="モノトーン（ブラック・ホワイト・グレー）">モノトーン（ブラック・ホワイト）</option>
-                    <option value="アースカラー（ベージュ・カーキ・ブラウン）">アースカラー（ベージュ・カーキ）</option>
+                    <option value="ソリッド（無地カラー）">ソリッド（無地）</option>
+                    <option value="グラフィック（プリント・ロゴ）">グラフィック（プリント）</option>
+                    <option value="フローラル（花柄・ボタニカル）">フローラル（花柄）</option>
+                    <option value="ストライプ / チェック柄">ストライプ / チェック</option>
+                    <option value="アニマルパターン（レオパード・ゼブラ）">アニマル柄</option>
+                    <option value="タイダイ（絞り染め・グラデーション）">タイダイ</option>
                 </select>
                 <input type="text" id="color-custom" placeholder="✍ 特定の色柄を自由入力">
             </div>
 
             <div class="form-group">
-                <label>7. Design / デザイン傾向</label>
+                <label>7. Style & Design / スタイル・デザイン傾向</label>
                 <select id="design-select">
                     <option value="">-- 選択なし（全体分析） --</option>
-                    <option value="オーバーサイズ・ビッグシルエット">オーバーサイズ・ビッグシルエット</option>
-                    <option value="ミニマル・シンプル無地">ミニマル・シンプル無地</option>
+                    <option value="カジュアル・デイリー（日常着）">カジュアル・デイリー</option>
+                    <option value="ストリート・エッジ（ユースカルチャー）">ストリート・エッジ</option>
+                    <option value="エレガント・フォーマル（ドレスアップ）">エレガント・フォーマル</option>
+                    <option value="ボヘミアン・リゾート（エスニック風）">ボヘミアン・リゾート</option>
+                    <option value="Y2K・トレンド（最新ギャル・レトロ）">Y2K・トレンド</option>
+                    <option value="ミニマル・ベーシック（タイムレス・シンプル）">ミニマル・ベーシック</option>
                 </select>
                 <input type="text" id="design-custom" placeholder="✍ デザイン特徴を自由入力">
             </div>
 
             <div class="form-group">
-                <label>8. Material / 素材・成分</label>
-                <select id="material-select">
+                <label>8. Size / サイズセクター</label>
+                <select id="size-select">
                     <option value="">-- 選択なし（全体分析） --</option>
-                    <option value="天然素材（コットン・綿100% / リネン）">天然素材（コットン/リネン）</option>
-                    <option value="機能性高聚物（ナイロン・ポリエステル）">機能性化学繊維</option>
+                    <option value="プラスサイズ（大きいサイズ・曲線美重視）">プラスサイズ（大きいサイズ）</option>
+                    <option value="プチサイズ（低身長・小さいサイズ）">プチサイズ（小さいサイズ）</option>
+                    <option value="レギュラーサイズ（標準展開）">レギュラーサイズ</option>
+                    <option value="オーバーサイズ / ルーズフィット">オーバーサイズ / ルーズ</option>
+                    <option value="マルチサイズ展開（S/M/L等幅広く構成）">マルチサイズ展開（S/M/L）</option>
                 </select>
-                <input type="text" id="material-custom" placeholder="✍ 素材や美容成分を自由入力">
+                <input type="text" id="size-custom" placeholder="✍ 別の特定のサイズ区分を自由入力">
             </div>
 
             <button class="btn" onclick="runAnalysis()">多角分析マトリクス実行</button>
@@ -310,8 +320,8 @@
             <button class="ctrl-btn" id="openPanelBtn" style="display: none;" onclick="togglePanel()">☰ コントロールパネルを開く</button>
             
             <div class="dashboard">
-                <div class="chart-container" id="containerProducts">
-                    <div class="chart-title">① アソートメント：製品売上・品揃え構成比 (※クリックで詳細数値を展開)</div>
+                <div class="chart-container">
+                    <div class="chart-title">① アソートメント：製品売上・品揃え構成比 (※クリック詳細)</div>
                     <canvas id="chartProducts"></canvas>
                 </div>
                 <div class="chart-container">
@@ -319,23 +329,31 @@
                     <canvas id="chartChannels"></canvas>
                 </div>
                 <div class="chart-container">
-                    <div class="chart-title">③ プライシング：市場価格帯別アイテム分布グラフ</div>
+                    <div class="chart-title" id="titleRegionVolume">③ 地域：対象国・地域別 売上高 (※クリック詳細)</div>
+                    <canvas id="chartRegions"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">④ プライシング：市場価格帯別アイテム分布グラフ</div>
                     <canvas id="chartPrices"></canvas>
                 </div>
                 <div class="chart-container">
-                    <div class="chart-title">④ ディスカウント：市場値引き率・値下げ規模分布 (％表示)</div>
+                    <div class="chart-title">⑤ ディスカウント：市場値引き率・値下げ規模分布 (％)</div>
                     <canvas id="chartDiscounts"></canvas>
                 </div>
                 <div class="chart-container">
-                    <div class="chart-title">⑤ スピード：完売までの平均日数＆再入荷追跡</div>
+                    <div class="chart-title">⑥ サイジング：サイズ別 売上・展開構成比</div>
+                    <canvas id="chartSizes"></canvas>
+                </div>
+                <div class="chart-container" style="grid-column: span 2; height: 200px;">
+                    <div class="chart-title">⑦ スピード：完売までの平均日数＆再入荷追跡</div>
                     <canvas id="chartSpeeds"></canvas>
                 </div>
                 <div class="chart-container" id="containerSatisfactions">
-                    <div class="chart-title title-green">⑥ 顧客満足レビュー分析（※クリックで生レビューを抽出）</div>
+                    <div class="chart-title title-green">⑧ 満足分析：顧客満足レビュー傾向 (※クリック生声抽出)</div>
                     <canvas id="chartSatisfactions"></canvas>
                 </div>
-                <div class="chart-container" id="containerComplaints" style="grid-column: span 2; height: 220px;">
-                    <div class="chart-title title-pink">⑦ 顧客不満レビュー分析（※クリックで生レビューを抽出）</div>
+                <div class="chart-container" id="containerComplaints">
+                    <div class="chart-title title-pink">⑨ 不満分析：顧客不満レビュー傾向 (※クリック生声抽出)</div>
                     <canvas id="chartComplaints"></canvas>
                 </div>
 
@@ -344,13 +362,11 @@
                         <span id="detailPanelHeader">▶ SELECTED CELL TELEMETRY DATA LOG</span>
                         <span style="color: var(--accent-green);">STATUS: TELEMETRY_OPEN</span>
                     </div>
-                    <div id="detailPanelContent" style="font-size: 14px; color: #cbd5e1; line-height: 1.6;">
-                        グラフの要素をクリックすると、ここに生の内部データベースが直接展開されます。
-                    </div>
+                    <div id="detailPanelContent" style="font-size: 14px; color: #cbd5e1; line-height: 1.6;"></div>
                 </div>
 
                 <div class="output-panel">
-                    <div class="chart-title title-original">CHRONOS AI商品開発戦略指示書 OUTPUT</div>
+                    <div class="chart-title title-orange">CHRONOS 商品開発戦略指示書 OUTPUT</div>
                     <div class="output-text" id="outputText">ここにAIによるリアルな戦闘指示書が出力されます。</div>
                 </div>
             </div>
@@ -362,34 +378,40 @@
             const panel = document.getElementById('sidePanel');
             const openBtn = document.getElementById('openPanelBtn');
             panel.classList.toggle('collapsed');
-            if(panel.classList.contains('collapsed')) {
-                openBtn.style.display = 'block';
-            } else {
-                openBtn.style.display = 'none';
-            }
+            if(panel.classList.contains('collapsed')) openBtn.style.display = 'block';
+            else openBtn.style.display = 'none';
         }
 
+        // SHEIN・トレンド分析に基づいたアパレル特化型の品種リスト
         const industryDb = {
             "アパレル": {
                 brands: [
+                    { val: "全体", txt: "★全体（市場総合分析）" },
                     { val: "AOKI", txt: "AOKI" }, { val: "SHEIN", txt: "SHEIN" },
                     { val: "ZARA", txt: "ZARA" }, { val: "UNIQLO", txt: "UNIQLO" }
                 ],
                 categories: [
-                    { val: "全品種累計", txt: "★全品種累計" }, { val: "Tシャツ/カットソー", txt: "Tシャツ/カットソー" },
-                    { val: "シャツ/ブラウス", txt: "シャツ/ブラウス" }, { val: "ニット/セーター", txt: "ニット/セーター" },
-                    { val: "ワンピース", txt: "ワンピース" }, { val: "アウター/ジャケット", txt: "アウター/ジャケット" },
-                    { val: "パンツ/ボトムス", txt: "パンツ/ボトムス" }
+                    { val: "全品種累計", txt: "★全品種累計" },
+                    { val: "トップス（Tシャツ・ブラウス・カットソー）", txt: "トップス（Tシャツ・ブラウス）" },
+                    { val: "ドレス・ワンピース", txt: "ドレス・ワンピース" },
+                    { val: "ボトムス（パンツ・ジーンズ・スカート）", txt: "ボトムス（パンツ・スカート）" },
+                    { val: "アウター（ジャケット・コート・ブレザー）", txt: "アウター（ジャケット）" },
+                    { val: "アクティブウェア（ヨガ・スポーツブラ等）", txt: "アクティブウェア（スポーツ）" },
+                    { val: "スイムウェア（水着・ビーチウェア）", txt: "スイムウェア（水着）" },
+                    { val: "ラウンジウェア（パジャマ・部屋着）", txt: "ラウンジウェア（部屋着）" }
                 ]
             },
             "コスメ・美容": {
                 brands: [
+                    { val: "全体", txt: "★全体（市場総合分析）" },
                     { val: "資生堂", txt: "資生堂 (SHISEIDO)" }, { val: "KATE", txt: "KATE (ケイト)" },
-                    { val: "コーセー", txt: "コーセー (KOSE)" }, { val: "ロレアル", txt: "ロレアル パリ" }
+                    { val: "コーセー", txt: "コーセー (KOSE)" }
                 ],
                 categories: [
-                    { val: "全品種累計", txt: "★全品種累計" }, { val: "スキンケア/化粧水", txt: "スキンケア/化粧水" },
-                    { val: "美容液/セラム", txt: "美容液/セラム" }, { val: "ファンデーション", txt: "ファンデーション" },
+                    { val: "全品種累計", txt: "★全品種累計" },
+                    { val: "スキンケア/化粧水", txt: "スキンケア/化粧水" },
+                    { val: "美容液/セラム", txt: "美容液/セラム" },
+                    { val: "ファンデーション", txt: "ファンデーション" },
                     { val: "リップ/口紅", txt: "リップ/口紅" }
                 ]
             }
@@ -411,7 +433,7 @@
         window.onload = function() { syncIndustryOptions(); };
 
         let charts = {};
-        let rawServerResult = null; // クリック連動用に、サーバーの生データを保存する金庫
+        let rawServerResult = null;
 
         function initChart(id, type, labels, data, label, color, clickHandler = null) {
             if (charts[id]) charts[id].destroy();
@@ -442,14 +464,13 @@
             });
         }
 
-        // 🔍 クリックイベントのハンドラー集
+        // ① 製品クリック：販売数・売上高・平均単価を出す
         function handleProductClick(label, value) {
             const panel = document.getElementById('detailPanel');
             const header = document.getElementById('detailPanelHeader');
             const content = document.getElementById('detailPanelContent');
-            
             panel.style.display = 'block';
-            header.innerText = `▶ 分析詳細ログ: ${label}`;
+            header.innerText = `▶ アソートメント詳細マトリクス: ${label}`;
             
             if (rawServerResult && rawServerResult.chartProductsDetail && rawServerResult.chartProductsDetail[label]) {
                 const detail = rawServerResult.chartProductsDetail[label];
@@ -457,48 +478,80 @@
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 5px;">
                         <div style="border: 1px dashed var(--accent-blue); padding: 10px; border-radius: 4px;">
                             <span style="font-size:11px; color:var(--text-muted);">推定総販売数</span><br>
-                            <strong style="font-size:18px; color:var(--accent-blue);">${detail.sales}</strong>
+                            <strong style="font-size:16px; color:var(--accent-blue);">${detail.sales}</strong>
                         </div>
                         <div style="border: 1px dashed var(--accent-green); padding: 10px; border-radius: 4px;">
                             <span style="font-size:11px; color:var(--text-muted);">推定総売上高</span><br>
-                            <strong style="font-size:18px; color:var(--accent-green);">${detail.revenue}</strong>
+                            <strong style="font-size:16px; color:var(--accent-green);">${detail.revenue}</strong>
                         </div>
                         <div style="border: 1px dashed var(--accent-yellow); padding: 10px; border-radius: 4px;">
                             <span style="font-size:11px; color:var(--text-muted);">平均販売単価</span><br>
-                            <strong style="font-size:18px; color:var(--accent-yellow);">${detail.avgPrice}</strong>
+                            <strong style="font-size:16px; color:var(--accent-yellow);">${detail.avgPrice}</strong>
                         </div>
                     </div>
                 `;
             } else {
-                content.innerHTML = `商品名「${label}」の内部データ: 販売数 ${value}点（詳細モジュール展開中...）`;
+                content.innerHTML = `商品名「${label}」の内部データ: 展開規模 ${value}点`;
             }
             panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
+        // ③ 国クリック：全世界選択時の国別の「売上高・販売数・単価」をドカンと数字で出す！
+        function handleRegionClick(label, value) {
+            const panel = document.getElementById('detailPanel');
+            const header = document.getElementById('detailPanelHeader');
+            const content = document.getElementById('detailPanelContent');
+            panel.style.display = 'block';
+            header.innerText = `▶ グローバル地域ドリルダウン: ${label}市場`;
+            
+            if (rawServerResult && rawServerResult.chartRegionsDetail && rawServerResult.chartRegionsDetail[label]) {
+                const detail = rawServerResult.chartRegionsDetail[label];
+                content.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 5px;">
+                        <div style="border: 1px solid var(--accent-orange); padding: 10px; border-radius: 4px; background-color: rgba(249, 115, 22, 0.05);">
+                            <span style="font-size:11px; color:var(--text-muted);">国別 売上高</span><br>
+                            <strong style="font-size:16px; color:var(--accent-orange);">${detail.revenue}</strong>
+                        </div>
+                        <div style="border: 1px dashed var(--accent-blue); padding: 10px; border-radius: 4px;">
+                            <span style="font-size:11px; color:var(--text-muted);">国別 推定販売数</span><br>
+                            <strong style="font-size:16px; color:var(--accent-blue);">${detail.sales}</strong>
+                        </div>
+                        <div style="border: 1px dashed var(--accent-yellow); padding: 10px; border-radius: 4px;">
+                            <span style="font-size:11px; color:var(--text-muted);">国別 平均販売単価</span><br>
+                            <strong style="font-size:16px; color:var(--accent-yellow);">${detail.avgPrice}</strong>
+                        </div>
+                    </div>
+                `;
+            } else {
+                content.innerHTML = `地域名「${label}」の売上規模: ${value} (詳細テレメトリ受信完了)`;
+            }
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // ⑧⑨ レビュークリック：ECサイトへのリンク付き生レビュー
         function handleReviewClick(type, label, value) {
             const panel = document.getElementById('detailPanel');
             const header = document.getElementById('detailPanelHeader');
             const content = document.getElementById('detailPanelContent');
-            
             panel.style.display = 'block';
-            header.innerText = `▶ 抽出リアルレビューログ [種類: ${type} - 要因: ${label}]`;
+            header.innerText = `▶ 抽出口コミテキストログ [${type}要因: ${label}]`;
             
             const dbKey = type === '満足' ? 'chartSatisfactionsReviews' : 'chartComplaintsReviews';
             
             if (rawServerResult && rawServerResult[dbKey] && rawServerResult[dbKey][label]) {
                 const reviews = rawServerResult[dbKey][label];
-                let cardsHtml = `<div style="margin-top: 5px; font-size:11px; color:var(--text-muted); margin-bottom:8px;">該当する市場の生の口コミから上位3件のサンプルを自動抽出しました:</div>`;
+                let cardsHtml = `<div style="margin-top: 5px; font-size:11px; color:var(--text-muted); margin-bottom:8px;">ECモジュール内からリアルなカスタマーレビューを抽出しました（上位3件）:</div>`;
                 reviews.forEach(r => {
                     cardsHtml += `
                         <div class="review-card" style="border-left-color: ${type === '満足' ? 'var(--accent-green)' : 'var(--accent-pink)'}">
                             <div>"${r.text}"</div>
-                            <a href="${r.url}" target="_blank" class="review-link">🔗 ECサイトの該当レビュー原文をブラウザで確認 ➔</a>
+                            <a href="${r.url}" target="_blank" class="review-link" style="color: var(--accent-blue);">🔗 ECストアの原文レビューをブラウザで開く ➔</a>
                         </div>
                     `;
                 });
                 content.innerHTML = cardsHtml;
             } else {
-                content.innerHTML = `要因「${label}」に関する生の口コミデータを抽出しています... (サンプルレビュー展開中)`;
+                content.innerHTML = `要因「${label}」に関するサンプルレビューを展開中...`;
             }
             panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
@@ -513,7 +566,7 @@
             const btn = document.querySelector('.btn');
             const loading = document.getElementById('loadingText');
             btn.disabled = true; loading.style.display = 'block';
-            document.getElementById('detailPanel').style.display = 'none'; // パネルを一旦隠す
+            document.getElementById('detailPanel').style.display = 'none';
 
             const payload = {
                 industry: getHybridValue('industry-select', 'industry-custom'),
@@ -523,11 +576,13 @@
                 region: getHybridValue('region-select', 'region-custom'),
                 color: getHybridValue('color-select', 'color-custom'),
                 design: getHybridValue('design-select', 'design-custom'),
-                material: getHybridValue('material-select', 'material-custom')
+                size: getHybridValue('size-select', 'size-custom')
             };
 
-            const unit = (payload.region.includes('日本')) ? '売上高 (億円)' : '売上高 (万ドル)';
+            const isJapan = payload.region.includes('日本');
+            const unit = isJapan ? '売上高 (億円)' : '売上高 (万ドル)';
             document.getElementById('titleChannelVolume').innerText = `② マーケット：販売チャネル別 ${unit}`;
+            document.getElementById('titleRegionVolume').innerText = `③ 地域：対象国・地域別 ${unit} (※クリック詳細)`;
 
             try {
                 const response = await fetch('/api/analyze', {
@@ -543,18 +598,19 @@
                     return;
                 }
 
-                rawServerResult = result; // 生データを金庫に保管！
+                rawServerResult = result;
 
-                // 7大コア分析マトリクスのレンダリング
-                initChart('chartProducts', 'bar', result.chartProducts.labels, result.chartProducts.data, '推定数量', '#38bdf8', handleProductClick);
+                // 全9大コア分析マトリクスを一斉レンダリング！
+                initChart('chartProducts', 'bar', result.chartProducts.labels, result.chartProducts.data, '展開数量', '#38bdf8', handleProductClick);
                 initChart('chartChannels', 'bar', result.chartChannels.labels, result.chartChannels.data, unit, '#34d399');
+                initChart('chartRegions', 'bar', result.chartRegions.labels, result.chartRegions.data, unit, '#f97316', handleRegionClick);
                 initChart('chartPrices', 'line', result.chartPrices.labels, result.chartPrices.data, 'アイテム数分布', '#fbbf24');
-                initChart('chartDiscounts', 'doughnut', result.chartDiscounts.labels, result.chartDiscounts.data, '値引き構成比', ['#f97316', '#fbbf24', '#34d399', '#1e293b']);
+                initChart('chartDiscounts', 'doughnut', result.chartDiscounts.labels, result.chartDiscounts.data, '値引き比率', ['#f97316', '#fbbf24', '#34d399', '#1e293b']);
+                initChart('chartSizes', 'pie', result.chartSizes.labels, result.chartSizes.data, '構成比', ['#a78bfa', '#f472b6', '#38bdf8', '#fbbf24', '#e5e7eb']);
                 initChart('chartSpeeds', 'bar', result.chartSpeeds.labels, result.chartSpeeds.data, '日数 / 型数', '#a78bfa');
                 
-                // ⑥満足と⑦不満を完全セパレート！
-                initChart('chartSatisfactions', 'bar', result.chartSatisfactions.labels, result.chartSatisfactions.data, '満足数', '#34d399', (lbl, val) => handleReviewClick('満足', lbl, val));
-                initChart('chartComplaints', 'bar', result.chartComplaints.labels, result.chartComplaints.data, '不満数', '#f472b6', (lbl, val) => handleReviewClick('不満', lbl, val));
+                initChart('chartSatisfactions', 'bar', result.chartSatisfactions.labels, result.chartSatisfactions.data, '満足度件数', '#34d399', (lbl, val) => handleReviewClick('満足', lbl, val));
+                initChart('chartComplaints', 'bar', result.chartComplaints.labels, result.chartComplaints.data, '不満度件数', '#f472b6', (lbl, val) => handleReviewClick('不満', lbl, val));
 
                 document.getElementById('outputText').innerText = result.commentary;
 
